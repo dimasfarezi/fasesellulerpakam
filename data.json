@@ -1,14 +1,21 @@
-[
-  {
-    "nama": "stok kartu",
-    "nilai": "80000"
-  },
-  {
-    "nama": "stok handphone",
-    "nilai": "60000"
-  },
-  {
-    "nama": "stok barang",
-    "nilai": "300000"
-  }
-]
+{
+  "kategori": [
+    { "id": "kartu", "nama": "STOK KARTU", "nilai": "200.000" },
+    { "id": "hp", "nama": "STOK HANDPHONE", "nilai": "500.000" },
+    { "id": "barang", "nama": "STOK BARANG", "nilai": "300.000" }
+  ],
+  "barang": [
+    {
+      "kategoriId": "kartu",
+      "nama": "SIMPATI 10GB",
+      "info": "READY",
+      "foto": "TEMPEL_LINK_GAMBAR_DI_SINI"
+    },
+    {
+      "kategoriId": "hp",
+      "nama": "IPHONE 13",
+      "info": "NEW",
+      "foto": "TEMPEL_LINK_GAMBAR_DI_SINI"
+    }
+  ]
+}
