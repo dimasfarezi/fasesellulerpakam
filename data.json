@@ -8,12 +8,12 @@
     {
       "id": "hp",
       "nama": "STOK HANDPHONE",
-      "nilai": "500.000"
+      "nilai": "50"
     },
     {
       "id": "barang",
       "nama": "STOK BARANG",
-      "nilai": "300.000"
+      "nilai": "50"
     }
   ],
   "barang": [
