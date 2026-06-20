@@ -1,0 +1,20 @@
+{
+  "items": [
+    {
+      "label": "STOK PULSA (K)",
+      "value": "2.500"
+    },
+    {
+      "label": "PAKET DATA",
+      "value": "45"
+    },
+    {
+      "label": "SALDO TOKO",
+      "value": "1.250"
+    },
+    {
+      "label": "TERJUAL HARI INI",
+      "value": "12"
+    }
+  ]
+}
