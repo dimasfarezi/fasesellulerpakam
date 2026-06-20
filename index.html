@@ -3,208 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fase Selular Pakam</title>
+    <title>Dashboard Fase Selular Pakam</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Kanit:ital,wght@1,700&display=swap" rel="stylesheet">
     <style>
-        /* STYLE HALAMAN LOGIN (GAMBAR 1) */
+        /* 1. HALAMAN LOGIN MENDATAR (HORIZONTAL) */
         #login-screen {
             background-color: #484b3d;
-            height: 100vh; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; position: fixed; inset: 0; z-index: 100;
+            position: fixed; inset: 0; z-index: 1000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        .header-box-login { display: flex; gap: 2px; margin-bottom: 8px; }
+        .header-box-login { display: flex; gap: 2px; margin-bottom: 10px; }
         .box-gray {
-            background: #9fa18a; padding: 12px 30px; color: #1a1a1a;
-            font-family: 'Kanit', sans-serif; font-style: italic; font-weight: 800; font-size: 2rem;
+            background: #9fa18a; padding: 12px 25px; color: #1a1a1a;
+            font-family: 'Kanit', sans-serif; font-style: italic; font-weight: 800; font-size: 1.8rem;
         }
         .input-dark {
             background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2);
-            color: white; padding: 12px; width: 250px; outline: none; border-radius: 2px;
+            color: white; padding: 12px; width: 220px; outline: none; border-radius: 4px;
         }
         .btn-gold {
-            background: #c28a00; color: white; padding: 12px 30px;
-            font-weight: bold; text-transform: uppercase; border-radius: 2px;
+            background: #c28a00; color: white; padding: 12px 25px;
+            font-weight: bold; border-radius: 4px; text-transform: uppercase;
         }
 
-        /* STYLE DASHBOARD (GAMBAR 2) */
+        /* 2. DASHBOARD BAMBU */
         #dashboard {
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1542332213-9b5a5a3fab35?fit=crop&w=1920&q=80');
-            background-size: cover; background-position: center; min-height: 100vh;
-            display: none; padding: 20px; font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1542332213-9b5a5a3fab35?fit=crop&w=1000&q=80');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            min-height: 100vh; display: none; padding: 20px; font-family: 'Orbitron', sans-serif;
         }
         .gold-title {
             color: #facc15; font-family: 'Kanit', sans-serif; font-style: italic;
             text-shadow: 2px 2px 10px rgba(0,0,0,0.8); line-height: 1.1;
         }
         .card-stok {
-            background: rgba(0, 0, 0, 0.9); border-radius: 15px; padding: 25px;
+            background: rgba(0, 0, 0, 0.9); border-radius: 12px; padding: 25px;
             display: flex; justify-content: space-between; align-items: center;
-            max-width: 600px; margin: 12px auto; border-bottom: 4px solid #111;
+            max-width: 550px; margin: 15px auto; border-bottom: 4px solid #111;
         }
 
-        /* PANEL ADMIN */
+        /* ADMIN PANEL */
         #admin-panel {
             position: fixed; inset: 0; background: rgba(0,0,0,0.98);
-            display: none; z-index: 200; padding: 20px; overflow-y: auto;
+            display: none; z-index: 2000; padding: 20px; overflow-y: auto;
         }
     </style>
 </head>
 <body>
 
-    <!-- ================= 1. HALAMAN LOGIN (MENDATAR) ================= -->
+    <!-- SCREEN LOGIN AWAL (MENDATAR) -->
     <div id="login-screen">
         <div class="header-box-login">
             <div class="box-gray">FASE SELULAR</div>
             <div class="box-gray">PAKAM</div>
         </div>
-        <p class="text-[10px] text-white/70 tracking-[4px] mb-12 uppercase">Private Access Only</p>
+        <p class="text-[10px] text-white/50 tracking-[4px] mb-12 uppercase italic">Private Access Only</p>
         
-        <!-- Baris Input Mendatar Sesuai Gambar -->
-        <div class="flex flex-col md:flex-row gap-1 items-center">
-            <input type="text" id="user-main" placeholder="Username" class="input-dark text-center">
-            <input type="password" id="pass-main" placeholder="Password" class="input-dark text-center">
-            <button onclick="loginUtama()" class="btn-gold">MASUK KE DASHBOARD</button>
+        <div class="flex flex-col md:flex-row gap-2 items-center">
+            <input type="text" id="u-main" placeholder="Username" class="input-dark text-center">
+            <input type="password" id="p-main" placeholder="Password" class="input-dark text-center">
+            <button onclick="prosesLogin()" class="btn-gold">MASUK KE DASHBOARD</button>
         </div>
-        <p id="err-main" class="text-red-500 text-[10px] mt-4 hidden italic">Username atau Password Salah!</p>
+        <p id="err-msg" class="text-red-500 text-[10px] mt-4 hidden italic">Kombinasi Salah!</p>
     </div>
 
-    <!-- ================= 2. DASHBOARD (TEMA BAMBU) ================= -->
+    <!-- SCREEN DASHBOARD (BAMBU) -->
     <div id="dashboard">
-        <!-- Top Nav -->
         <div class="flex justify-between items-center mb-10">
-            <div class="w-10 h-10 border border-white/20 flex items-center justify-center text-[8px] rounded bg-black/20">LOGO</div>
+            <div class="w-10 h-10 border border-white/20 bg-black/30 flex items-center justify-center text-[8px] rounded">LOGO</div>
             <div class="text-center">
                 <h2 id="clock" class="text-2xl font-bold tracking-widest text-blue-100">00.00.00</h2>
                 <p id="date" class="text-[9px] opacity-60">MINGGU, 21 JUN 2026</p>
             </div>
-            <button onclick="mintaAksesID()" class="border border-white/40 px-3 py-1 text-[9px] rounded uppercase bg-black/40">LOGIN</button>
+            <!-- Klik ini muncul PROMPT ID -->
+            <button onclick="bukaAdminPrompt()" class="border border-white/40 px-3 py-1 text-[9px] rounded uppercase bg-black/40">LOGIN</button>
         </div>
 
-        <!-- Judul Ganti Jadi Fase Selular Pakam -->
         <div class="text-center mb-16">
             <h1 class="text-6xl gold-title italic font-bold uppercase">FASE SELULAR</h1>
             <h1 class="text-6xl gold-title italic font-bold mb-4 uppercase">PAKAM</h1>
             <p class="text-[10px] tracking-[0.4em] text-white/70 uppercase">Generasi Peternak Modern</p>
         </div>
 
-        <!-- List Stok -->
-        <div id="stok-list">
-            <!-- Data dari data.json akan muncul di sini -->
-        </div>
+        <div id="konten-stok"></div>
     </div>
 
-    <!-- ================= 3. PANEL UPDATE ADMIN ================= -->
+    <!-- SCREEN UPDATE DATA -->
     <div id="admin-panel">
         <div class="max-w-sm mx-auto pt-10">
-            <h2 class="text-yellow-500 font-bold text-center mb-6 uppercase tracking-widest">Update Stok Toko</h2>
-            <div class="space-y-2 mb-6">
-                <input type="text" id="gh-user" placeholder="User GitHub" class="w-full p-3 bg-gray-800 rounded text-sm text-white outline-none">
-                <input type="text" id="gh-repo" placeholder="Repo GitHub" class="w-full p-3 bg-gray-800 rounded text-sm text-white outline-none">
-                <input type="password" id="gh-token" placeholder="Token GitHub" class="w-full p-3 bg-gray-800 rounded text-sm text-white outline-none">
+            <h2 class="text-yellow-500 font-bold text-center mb-6 uppercase tracking-widest">Update Stok</h2>
+            <div class="space-y-2 mb-6 text-white">
+                <input type="text" id="gh-u" placeholder="User GitHub" class="w-full p-3 bg-gray-800 rounded text-sm outline-none">
+                <input type="text" id="gh-r" placeholder="Repo GitHub" class="w-full p-3 bg-gray-800 rounded text-sm outline-none">
+                <input type="password" id="gh-t" placeholder="Token GitHub" class="w-full p-3 bg-gray-800 rounded text-sm outline-none">
             </div>
-            <div id="form-edit" class="space-y-4 mb-6 pt-4 border-t border-white/10"></div>
-            <button onclick="simpanKeGithub()" id="btn-save" class="w-full bg-yellow-600 p-3 rounded font-bold uppercase text-white">Simpan Perubahan</button>
-            <button onclick="document.getElementById('admin-panel').style.display='none'" class="w-full mt-4 text-[10px] opacity-40 text-white uppercase">Kembali</button>
-            <p id="status" class="text-center text-xs mt-4"></p>
+            <div id="fields-edit" class="space-y-4 mb-6 pt-4 border-t border-white/10"></div>
+            <button onclick="gasUpdate()" id="btn-gas" class="w-full bg-yellow-600 p-3 rounded font-bold uppercase text-white">Simpan Perubahan</button>
+            <button onclick="document.getElementById('admin-panel').style.display='none'" class="w-full mt-4 text-[10px] opacity-40 text-white">KEMBALI</button>
+            <p id="notif" class="text-center text-xs mt-4"></p>
         </div>
     </div>
 
 <script>
-    // --- KONFIGURASI LOGIN ---
-    const LOGIN_USER = "admin";    // Username masuk dashboard
-    const LOGIN_PASS = "12345";    // Password masuk dashboard
-    const ID_ADMIN = "pakam01";    // ID untuk buka menu update di dashboard
-    // -------------------------
+    // --- KONFIGURASI ---
+    const LOGIN_U = "admin";    // User masuk web
+    const LOGIN_P = "12345";    // Pass masuk web
+    const ID_ADM  = "pakam01";  // ID prompt login dashboard
+    // -------------------
 
-    let stokData = [];
+    let stokLocal = [];
 
-    // Login Awal (Horizontal)
-    function loginUtama() {
-        const u = document.getElementById('user-main').value;
-        const p = document.getElementById('pass-main').value;
-        if(u === LOGIN_USER && p === LOGIN_PASS) {
+    // 1. Login Horizontal
+    function prosesLogin() {
+        const u = document.getElementById('u-main').value;
+        const p = document.getElementById('p-main').value;
+        if(u === LOGIN_U && p === LOGIN_P) {
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('dashboard').style.display = 'block';
-            loadData();
+            muatData();
         } else {
-            document.getElementById('err-main').classList.remove('hidden');
+            document.getElementById('err-msg').classList.remove('hidden');
         }
     }
 
-    // Prompt ID (Muncul kotak "ID:" saat klik Login di Dashboard)
-    function mintaAksesID() {
-        let inputID = prompt("ID:");
-        if(inputID === ID_ADMIN) {
+    // 2. Prompt ID (Gambar 3)
+    function bukaAdminPrompt() {
+        let ask = prompt("ID:");
+        if(ask === ID_ADM) {
             document.getElementById('admin-panel').style.display = 'block';
-        } else if(inputID !== null) {
-            alert("Akses Ditolak!");
+        } else if(ask !== null) {
+            alert("Akses Dilarang!");
         }
     }
 
-    // Jam Realtime Digital
+    // Jam Realtime
     setInterval(() => {
         const d = new Date();
         document.getElementById('clock').innerText = d.toLocaleTimeString('en-GB').replace(/:/g, '.');
         document.getElementById('date').innerText = d.toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'short', year:'numeric'}).toUpperCase();
     }, 1000);
 
-    // Ambil Data dari GitHub
-    async function loadData() {
+    // Muat Data dari data.json
+    async function muatData() {
         try {
-            const res = await fetch('data.json?v=' + Date.now());
-            stokData = await res.json();
+            const r = await fetch('data.json?v=' + Date.now());
+            stokLocal = await r.json();
             
-            // Tampilkan kartu stok di dashboard
-            document.getElementById('stok-list').innerHTML = stokData.map(item => `
+            document.getElementById('konten-stok').innerHTML = stokLocal.map(i => `
                 <div class="card-stok shadow-2xl">
-                    <span class="text-sm font-bold tracking-widest uppercase text-white">${item.nama}</span>
-                    <span class="text-4xl font-bold text-white">${item.nilai}</span>
+                    <span class="text-sm font-bold tracking-widest uppercase text-white/90">${i.nama}</span>
+                    <span class="text-4xl font-bold text-white">${i.nilai}</span>
                 </div>
             `).join('');
 
-            // Siapkan input di panel admin
-            document.getElementById('form-edit').innerHTML = stokData.map((item, i) => `
+            document.getElementById('fields-edit').innerHTML = stokLocal.map((i, idx) => `
                 <div>
-                    <label class="text-[9px] opacity-40 uppercase mb-1 block text-white">${item.nama}</label>
-                    <input type="text" id="inp-${i}" value="${item.nilai}" class="w-full p-2 bg-gray-700 border border-gray-600 rounded text-sm text-white">
+                    <label class="text-[9px] opacity-40 uppercase mb-1 block text-white">${i.nama}</label>
+                    <input type="text" id="val-${idx}" value="${i.nilai}" class="w-full p-2 bg-gray-700 border border-gray-600 rounded text-sm text-white">
                 </div>
             `).join('');
-        } catch (e) { console.log("Gagal muat data.json"); }
+        } catch (e) { console.log("JSON Not Found"); }
     }
 
-    // Simpan Perubahan ke GitHub API
-    async function simpanKeGithub() {
-        const user = document.getElementById('gh-user').value;
-        const repo = document.getElementById('gh-repo').value;
-        const token = document.getElementById('gh-token').value;
-        if(!user || !repo || !token) return alert("Lengkapi Akun GitHub!");
+    // Update ke GitHub
+    async function gasUpdate() {
+        const user = document.getElementById('gh-u').value;
+        const repo = document.getElementById('gh-r').value;
+        const tok  = document.getElementById('gh-t').value;
+        if(!user || !repo || !tok) return alert("Lengkapi Data Akun!");
 
-        const btn = document.getElementById('btn-save');
-        btn.disabled = true; btn.innerText = "Proses Simpan...";
+        const btn = document.getElementById('btn-gas');
+        btn.disabled = true; btn.innerText = "Saving...";
 
         try {
-            const get = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data.json`);
-            const file = await get.json();
+            const g = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data.json`);
+            const f = await g.json();
 
-            const baru = stokData.map((item, i) => ({
-                nama: item.nama,
-                nilai: document.getElementById('inp-' + i).value
+            const upd = stokLocal.map((i, idx) => ({
+                nama: i.nama,
+                nilai: document.getElementById('val-' + idx).value
             }));
 
             const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/data.json`, {
                 method: 'PUT',
-                headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+                headers: { 'Authorization': `token ${tok}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    message: "Update Stok Fase Selular",
-                    content: btoa(JSON.stringify(baru, null, 2)),
-                    sha: file.sha
+                    message: "Update",
+                    content: btoa(JSON.stringify(upd, null, 2)),
+                    sha: f.sha
                 })
             });
 
-            if(res.ok) { alert("Data Berhasil Diupdate!"); location.reload(); }
-            else { alert("Gagal Simpan! Periksa Token/Repo."); btn.disabled = false; }
-        } catch (e) { alert("Error Koneksi."); btn.disabled = false; }
+            if(res.ok) { alert("Selesai!"); location.reload(); }
+            else { alert("Gagal!"); btn.disabled = false; }
+        } catch (e) { alert("Koneksi Putus"); btn.disabled = false; }
     }
 </script>
 </body>
