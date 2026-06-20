@@ -1,23 +1,14 @@
-<div class="banner-container">
-    <div class="main-title">
-        <div class="box">FASE SELULAR</div>
-        <div class="box">PAKAM</div>
-    </div>
-    <div class="sub-title">FASE SELLULAR PAKAM</div>
-    <div class="line"></div>
-</div>
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Toko Barokah</title>
+    <title>Putra Barokah Farm</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Kanit:ital,wght@1,700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            /* Ganti URL gambar di bawah ini untuk mengganti background */
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1614850523296-d8c1af93d400?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background: url('https://images.unsplash.com/photo-1542332213-9b5a5a3fab35?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -25,117 +16,158 @@
             color: white;
             min-height: 100vh;
         }
-        .glass {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .overlay { background: rgba(0, 0, 0, 0.4); min-height: 100vh; width: 100%; }
+        .font-digital { font-family: 'Orbitron', sans-serif; }
+        .font-italic-bold { font-family: 'Kanit', sans-serif; font-style: italic; }
+        
+        /* Box Utama */
+        .card-main {
+            background: rgba(13, 18, 1, 0.9);
+            border: 1px solid #333;
             border-radius: 15px;
-            transition: 0.3s;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .font-header { font-family: 'Orbitron', sans-serif; }
-        .gold-text { color: #FFD700; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+
+        /* Card Detail Bawah */
+        .card-detail {
+            background: rgba(13, 18, 1, 0.95);
+            border: 1px solid #4a5d23;
+            border-radius: 10px;
+            overflow: hidden;
+            width: 100%;
+        }
+        .img-placeholder {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            background: #222;
+        }
+        .gold-text { color: #eab308; }
     </style>
 </head>
-<body class="p-4">
+<body>
+<div class="overlay p-4">
+    
     <!-- Header -->
-    <header class="flex justify-between items-center mb-10">
-        <div class="text-xs">
-            <img src="https://via.placeholder.com/40" alt="Logo" class="rounded-full border border-white">
-        </div>
+    <header class="flex justify-between items-start mb-6">
+        <img src="https://via.placeholder.com/50" alt="Logo" class="rounded-full border border-white/20">
         <div class="text-center">
-            <h2 id="clock" class="text-2xl font-header font-bold tracking-widest">00:00:00</h2>
-            <p id="date" class="text-[10px] uppercase tracking-tighter">MINGGU, 21 JUN 2026</p>
+            <h2 id="clock" class="text-2xl font-digital font-bold tracking-widest text-blue-100">05.13.17</h2>
+            <p id="date" class="text-[9px] font-digital opacity-60 uppercase">MINGGU, 21 JUN 2026</p>
         </div>
-        <button class="border border-white px-3 py-1 text-[10px] rounded uppercase">Login</button>
+        <button class="border border-white/40 px-3 py-1 text-[9px] rounded uppercase bg-black/20">Login</button>
     </header>
 
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@1,800&family=Montserrat:wght@400;700&display=swap');
-    <!-- Main Title -->
-    <main class="max-w-md mx-auto text-center">
-        <h1 class="text-4xl font-header font-bold gold-text italic mb-1">REKAP TOKO</h1>
-        <h1 class="text-4xl font-header font-bold gold-text italic mb-4">PULSA & DATA</h1>
-        <p class="text-[10px] tracking-[0.3em] mb-10 font-light opacity-80 underline underline-offset-4">PENCATATAN STOK MODERN</p>
+    <!-- Title Section -->
+    <div class="text-center mb-8">
+        <h1 class="text-4xl font-italic-bold gold-text leading-none">PUTRA BAROKAH</h1>
+        <h1 class="text-4xl font-italic-bold gold-text mb-1">FARM</h1>
+        <p class="text-[10px] tracking-[0.4em] font-digital opacity-70">GENERASI PETERNAK MODERN</p>
+    </div>
 
-    .banner-container {
-        background-color: #4b4b3c; /* Warna background sesuai gambar */
-        padding: 60px 20px;
-        text-align: center;
-        font-family: 'Exo 2', sans-serif;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-        <!-- Stats Cards -->
-        <div id="content" class="space-y-4">
-            <!-- Data akan dimuat di sini oleh JavaScript -->
-            <div class="animate-pulse">Loading data...</div>
+    <!-- Main List (INDUKAN, PEJANTAN, CEMPE) -->
+    <div id="main-summary" class="max-w-xl mx-auto space-y-3 mb-10">
+        <!-- Data akan masuk ke sini -->
+    </div>
+
+    <!-- Detail Section (Bagian Bawah) -->
+    <div class="max-w-4xl mx-auto">
+        <div class="flex justify-between items-center border-b border-blue-900 pb-1 mb-4">
+            <h3 class="text-blue-400 font-italic-bold text-sm italic">PEJANTAN</h3>
+            <button class="bg-black/80 text-[8px] px-2 py-1 rounded border border-white/20">CLOSE X</button>
         </div>
-    </main>
 
-    .main-title .box {
-        background: rgba(255, 255, 255, 0.2);
-        color: #2e2e2e;
-        font-size: 3.5rem;
-        font-weight: 800;
-        font-style: italic;
-        padding: 5px 30px;
-        margin-bottom: 5px;
-        display: inline-block;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-    }
-    <script>
-        // Fungsi Jam & Tanggal Realtime
-        function updateTime() {
-            const now = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
-            document.getElementById('clock').innerText = now.toLocaleTimeString('en-GB');
-            document.getElementById('date').innerText = now.toLocaleDateString('id-ID', options).toUpperCase();
-        }
-        setInterval(updateTime, 1000);
-        updateTime();
+        <div id="detail-list" class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <!-- Item Pejantan akan masuk ke sini -->
+        </div>
+    </div>
 
-    .sub-title {
-        color: #d1d1d1;
-        font-family: 'Montserrat', sans-serif;
-        font-size: 0.9rem;
-        letter-spacing: 5px;
-        margin-top: 20px;
-        font-weight: bold;
-    }
-        // Fungsi Ambil Data dari data.json
-        async function loadData() {
-            try {
-                // Tambahkan query string waktu agar browser tidak cache data lama
-                const response = await fetch('data.json?v=' + new Date().getTime());
-                const data = await response.json();
-                
-                const content = document.getElementById('content');
-                content.innerHTML = '';
+</div>
 
-    .line {
-        width: 180px;
-        height: 2px;
-        background-color: #d1d1d1;
-        margin-top: 5px;
+<script>
+    // Live Clock
+    function updateTime() {
+        const now = new Date();
+        document.getElementById('clock').innerText = now.getHours().toString().padStart(2, '0') + '.' + now.getMinutes().toString().padStart(2, '0') + '.' + now.getSeconds().toString().padStart(2, '0');
+        const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
+        document.getElementById('date').innerText = now.toLocaleDateString('id-ID', options).toUpperCase();
     }
-</style>
-                data.items.forEach(item => {
-                    content.innerHTML += `
-                        <div class="glass flex justify-between items-center p-6 shadow-2xl">
-                            <span class="font-bold tracking-[0.2em] text-sm uppercase">${item.label}</span>
-                            <span class="text-3xl font-header font-bold">${item.value}</span>
+    setInterval(updateTime, 1000);
+    updateTime();
+
+    // Load Data From GitHub JSON
+    async function loadData() {
+        try {
+            const res = await fetch('data.json?v=' + Date.now());
+            const data = await res.json();
+            
+            // 1. Render Summary (Atas)
+            const summaryBox = document.getElementById('main-summary');
+            summaryBox.innerHTML = '';
+            data.summary.forEach(item => {
+                summaryBox.innerHTML += `
+                    <div class="card-main">
+                        <span class="font-digital font-bold text-sm tracking-widest uppercase">${item.label}</span>
+                        <span class="text-4xl font-digital font-bold">${item.value}</span>
+                    </div>
+                `;
+            });
+
+            // 2. Render Details (Bawah)
+            const detailBox = document.getElementById('detail-list');
+            detailBox.innerHTML = '';
+            data.details.forEach(animal => {
+                detailBox.innerHTML += `
+                    <div class="card-detail">
+                        <img src="${animal.image}" alt="${animal.name}" class="img-placeholder" onerror="this.src='https://via.placeholder.com/150x100?text=No+Image'">
+                        <div class="p-2 bg-[#0d1201]">
+                            <p class="text-[10px] font-bold uppercase">${animal.name}</p>
+                            <p class="text-[9px] opacity-60">${animal.weight}</p>
                         </div>
-                    `;
-                });
-            } catch (error) {
-                console.error("Gagal memuat data:", error);
-            }
-        }
-
-        loadData();
-    </script>
+                    </div>
+                `;
+            });
+        } catch (e) { console.error("Data error"); }
+    }
+    loadData();
+</script>
 </body>
 </html>
+2. File: data.json
+Update file ini di GitHub untuk merubah isi data (Jumlah hewan & detailnya):
+code
+JSON
+{
+  "summary": [
+    { "label": "INDUKAN", "value": "3" },
+    { "label": "PEJANTAN", "value": "5" },
+    { "label": "CEMPE", "value": "4" }
+  ],
+  "details": [
+    {
+      "name": "ALEX",
+      "weight": "10 KG",
+      "image": "https://cdn-icons-png.flaticon.com/512/1998/1998668.png"
+    },
+    {
+      "name": "ALENG",
+      "weight": "30 KG",
+      "image": "https://via.placeholder.com/200x150"
+    },
+    {
+      "name": "JI SONG",
+      "weight": "60 KG",
+      "image": "https://via.placeholder.com/200x150"
+    },
+    {
+      "name": "BAGONG",
+      "weight": "100 KG",
+      "image": "https://via.placeholder.com/200x150"
+    }
+  ]
+}
