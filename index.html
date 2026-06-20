@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Toko Barokah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            /* Ganti URL gambar di bawah ini untuk mengganti background */
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1614850523296-d8c1af93d400?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Roboto', sans-serif;
+            color: white;
+            min-height: 100vh;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            transition: 0.3s;
+        }
+        .font-header { font-family: 'Orbitron', sans-serif; }
+        .gold-text { color: #FFD700; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body class="p-4">
+    <!-- Header -->
+    <header class="flex justify-between items-center mb-10">
+        <div class="text-xs">
+            <img src="https://via.placeholder.com/40" alt="Logo" class="rounded-full border border-white">
+        </div>
+        <div class="text-center">
+            <h2 id="clock" class="text-2xl font-header font-bold tracking-widest">00:00:00</h2>
+            <p id="date" class="text-[10px] uppercase tracking-tighter">MINGGU, 21 JUN 2026</p>
+        </div>
+        <button class="border border-white px-3 py-1 text-[10px] rounded uppercase">Login</button>
+    </header>
+
+    <!-- Main Title -->
+    <main class="max-w-md mx-auto text-center">
+        <h1 class="text-4xl font-header font-bold gold-text italic mb-1">REKAP TOKO</h1>
+        <h1 class="text-4xl font-header font-bold gold-text italic mb-4">PULSA & DATA</h1>
+        <p class="text-[10px] tracking-[0.3em] mb-10 font-light opacity-80 underline underline-offset-4">PENCATATAN STOK MODERN</p>
+
+        <!-- Stats Cards -->
+        <div id="content" class="space-y-4">
+            <!-- Data akan dimuat di sini oleh JavaScript -->
+            <div class="animate-pulse">Loading data...</div>
+        </div>
+    </main>
+
+    <script>
+        // Fungsi Jam & Tanggal Realtime
+        function updateTime() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
+            document.getElementById('clock').innerText = now.toLocaleTimeString('en-GB');
+            document.getElementById('date').innerText = now.toLocaleDateString('id-ID', options).toUpperCase();
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Fungsi Ambil Data dari data.json
+        async function loadData() {
+            try {
+                // Tambahkan query string waktu agar browser tidak cache data lama
+                const response = await fetch('data.json?v=' + new Date().getTime());
+                const data = await response.json();
+                
+                const content = document.getElementById('content');
+                content.innerHTML = '';
+
+                data.items.forEach(item => {
+                    content.innerHTML += `
+                        <div class="glass flex justify-between items-center p-6 shadow-2xl">
+                            <span class="font-bold tracking-[0.2em] text-sm uppercase">${item.label}</span>
+                            <span class="text-3xl font-header font-bold">${item.value}</span>
+                        </div>
+                    `;
+                });
+            } catch (error) {
+                console.error("Gagal memuat data:", error);
+            }
+        }
+
+        loadData();
+    </script>
+</body>
+</html>
