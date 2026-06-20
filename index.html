@@ -1,67 +1,93 @@
+<div class="banner-container">
+    <div class="main-title">
+        <div class="box">FASE SELULAR</div>
+        <div class="box">PAKAM</div>
+    </div>
+    <div class="sub-title">FASE SELLULAR PAKAM</div>
+    <div class="line"></div>
+</div>
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rekap Toko Pulsa</title>
+    <title>Dashboard Toko Barokah</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            /* Gradasi sesuai gambar Anda */
-            background: linear-gradient(135deg, #6b1d4f 0%, #4a5d6e 50%, #2d4a4d 100%);
+            /* Ganti URL gambar di bawah ini untuk mengganti background */
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1614850523296-d8c1af93d400?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
             background-attachment: fixed;
-            min-height: 100vh;
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Roboto', sans-serif;
             color: white;
+            min-height: 100vh;
         }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(8px);
-            border: 1.5px solid rgba(255, 255, 255, 0.1);
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 15px;
-            margin-bottom: 15px;
-            padding: 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            transition: 0.3s;
         }
-        .label-text { font-size: 0.8rem; letter-spacing: 2px; font-weight: 700; color: #e2e8f0; }
-        .value-text { font-size: 2.2rem; font-weight: 700; color: white; }
-        .gold-title {
-            color: #fbbf24;
-            text-shadow: 0px 4px 10px rgba(0,0,0,0.5);
-            font-style: italic;
-            line-height: 1.1;
-        }
+        .font-header { font-family: 'Orbitron', sans-serif; }
+        .gold-text { color: #FFD700; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
     </style>
 </head>
-<body class="p-6">
+<body class="p-4">
     <!-- Header -->
-    <div class="flex justify-between items-center mb-10">
-        <div class="w-10 h-10 border border-white/30 rounded-full flex items-center justify-center text-[8px]">Logo</div>
-        <div class="text-center">
-            <div id="clock" class="text-2xl font-bold tracking-widest">00:00:00</div>
-            <div id="date" class="text-[9px] opacity-80 uppercase">MINGGU, 21 JUN 2026</div>
+    <header class="flex justify-between items-center mb-10">
+        <div class="text-xs">
+            <img src="https://via.placeholder.com/40" alt="Logo" class="rounded-full border border-white">
         </div>
-        <button class="text-[9px] border border-white/50 px-3 py-1 rounded uppercase">Login</button>
-    </div>
+        <div class="text-center">
+            <h2 id="clock" class="text-2xl font-header font-bold tracking-widest">00:00:00</h2>
+            <p id="date" class="text-[10px] uppercase tracking-tighter">MINGGU, 21 JUN 2026</p>
+        </div>
+        <button class="border border-white px-3 py-1 text-[10px] rounded uppercase">Login</button>
+    </header>
 
-    <!-- Title Area -->
-    <div class="text-center mb-12">
-        <h1 class="text-3xl gold-title font-bold">REKAP TOKO</h1>
-        <h1 class="text-3xl gold-title font-bold mb-2">PULSA & DATA</h1>
-        <div class="h-[1px] w-32 bg-white mx-auto mb-1 opacity-50"></div>
-        <p class="text-[9px] tracking-[0.3em] opacity-80 uppercase">Pencatatan Stok Modern</p>
-    </div>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@1,800&family=Montserrat:wght@400;700&display=swap');
+    <!-- Main Title -->
+    <main class="max-w-md mx-auto text-center">
+        <h1 class="text-4xl font-header font-bold gold-text italic mb-1">REKAP TOKO</h1>
+        <h1 class="text-4xl font-header font-bold gold-text italic mb-4">PULSA & DATA</h1>
+        <p class="text-[10px] tracking-[0.3em] mb-10 font-light opacity-80 underline underline-offset-4">PENCATATAN STOK MODERN</p>
 
-    <!-- Cards Container -->
-    <div id="display-area" class="max-w-md mx-auto">
-        <!-- Data dimuat di sini -->
-    </div>
+    .banner-container {
+        background-color: #4b4b3c; /* Warna background sesuai gambar */
+        padding: 60px 20px;
+        text-align: center;
+        font-family: 'Exo 2', sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+        <!-- Stats Cards -->
+        <div id="content" class="space-y-4">
+            <!-- Data akan dimuat di sini oleh JavaScript -->
+            <div class="animate-pulse">Loading data...</div>
+        </div>
+    </main>
 
+    .main-title .box {
+        background: rgba(255, 255, 255, 0.2);
+        color: #2e2e2e;
+        font-size: 3.5rem;
+        font-weight: 800;
+        font-style: italic;
+        padding: 5px 30px;
+        margin-bottom: 5px;
+        display: inline-block;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    }
     <script>
+        // Fungsi Jam & Tanggal Realtime
         function updateTime() {
             const now = new Date();
             const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
@@ -71,25 +97,45 @@
         setInterval(updateTime, 1000);
         updateTime();
 
-        async function fetchData() {
+    .sub-title {
+        color: #d1d1d1;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.9rem;
+        letter-spacing: 5px;
+        margin-top: 20px;
+        font-weight: bold;
+    }
+        // Fungsi Ambil Data dari data.json
+        async function loadData() {
             try {
-                // Menambahkan timestamp agar browser tidak mengambil cache lama
-                const response = await fetch('data.json?t=' + Date.now());
+                // Tambahkan query string waktu agar browser tidak cache data lama
+                const response = await fetch('data.json?v=' + new Date().getTime());
                 const data = await response.json();
-                const container = document.getElementById('display-area');
-                container.innerHTML = '';
                 
-                data.forEach(item => {
-                    container.innerHTML += `
-                        <div class="glass-card">
-                            <div class="label-text">${item.nama}</div>
-                            <div class="value-text">${item.jumlah}</div>
+                const content = document.getElementById('content');
+                content.innerHTML = '';
+
+    .line {
+        width: 180px;
+        height: 2px;
+        background-color: #d1d1d1;
+        margin-top: 5px;
+    }
+</style>
+                data.items.forEach(item => {
+                    content.innerHTML += `
+                        <div class="glass flex justify-between items-center p-6 shadow-2xl">
+                            <span class="font-bold tracking-[0.2em] text-sm uppercase">${item.label}</span>
+                            <span class="text-3xl font-header font-bold">${item.value}</span>
                         </div>
                     `;
                 });
-            } catch (e) { console.log("Error load data"); }
+            } catch (error) {
+                console.error("Gagal memuat data:", error);
+            }
         }
-        fetchData();
+
+        loadData();
     </script>
 </body>
 </html>
