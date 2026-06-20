@@ -3,27 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fase Selular Pakam</title>
+    <title>Fase Selular Pakam - Fixed</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Kanit:ital,wght@1,700&display=swap" rel="stylesheet">
     <style>
         body { background-color: #b0b0b0; font-family: 'Orbitron', sans-serif; margin: 0; padding: 20px; color: #333; }
         .judul-emas { color: #facc15; font-family: 'Kanit', sans-serif; font-style: italic; font-weight: 800; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
         .kartu { background: #0c0c0c; color: white; border-radius: 12px; padding: 25px; display: flex; justify-content: space-between; align-items: center; max-width: 500px; margin: 10px auto; }
-        
-        #layar-update {
-            position: fixed; inset: 0; background: #111; color: white;
-            display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; padding: 20px;
-        }
+        #layar-update { position: fixed; inset: 0; background: #111; color: white; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
         input { background: #222; border: 1px solid #444; color: white; padding: 12px; border-radius: 8px; width: 100%; max-width: 300px; outline: none; margin-bottom: 10px; font-size: 16px; text-align: center; }
         .btn-kuning { background: #d9a406; color: white; padding: 14px; border-radius: 8px; width: 100%; max-width: 300px; font-weight: bold; text-transform: uppercase; }
+        #status { font-size: 10px; margin-top: 15px; text-align: center; max-width: 300px; }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
     <div class="flex justify-between items-start mb-10">
-        <div class="text-[10px] font-bold opacity-40">AUTO-SYSTEM V7</div>
+        <div class="text-[10px] font-bold opacity-40">AUTO-SYSTEM V8</div>
         <div class="text-center">
             <h2 id="jam" class="text-2xl font-bold tracking-widest text-blue-900">00.00.00</h2>
             <p id="tgl" class="text-[9px] opacity-60 uppercase">MINGGU, 21 JUN 2026</p>
@@ -31,100 +27,92 @@
         <button onclick="bukaAdmin()" class="border border-black/20 px-3 py-1 text-[10px] rounded font-bold">LOGIN</button>
     </div>
 
-    <!-- Judul -->
     <div class="text-center mb-10">
         <h1 class="text-5xl judul-emas italic uppercase">FASE SELULAR</h1>
         <h1 class="text-5xl judul-emas italic uppercase mb-2">PAKAM</h1>
-        <p class="text-[9px] tracking-[0.3em] font-bold opacity-50 uppercase">Generasi Peternak Modern</p>
     </div>
 
-    <!-- Area Stok -->
     <div id="area-stok"></div>
 
-    <!-- Layar Update -->
     <div id="layar-update">
-        <h2 class="text-yellow-500 font-bold mb-8 tracking-widest uppercase text-sm">Update Stok</h2>
+        <h2 class="text-yellow-500 font-bold mb-8 tracking-widest uppercase text-sm">Update Stok Toko</h2>
         <div id="form-edit" class="w-full max-w-[300px] mb-6 space-y-4"></div>
         <button onclick="simpanData()" id="btn-save" class="btn-kuning">Simpan Perubahan</button>
+        <div id="status"></div>
         <button onclick="tutupAdmin()" class="mt-8 text-[10px] opacity-40 uppercase">Kembali</button>
-        <button onclick="resetAkses()" class="mt-4 text-[8px] opacity-20 uppercase">Reset Token</button>
+        <button onclick="resetAkses()" class="mt-10 text-[8px] opacity-20 uppercase">Hapus Token & Reset</button>
     </div>
 
 <script>
-    // ID Akses untuk masuk menu edit
     const ID_AKSES = "admin123"; 
-
     let dataGlobal = [];
 
-    // Deteksi Otomatis User & Repo dari URL
-    const urlParts = window.location.hostname.split('.');
-    const GH_USER = urlParts[0]; 
-    const GH_REPO = window.location.pathname.replace(/\//g, '');
+    // Deteksi Otomatis User & Repo yang lebih akurat
+    const GH_USER = window.location.hostname.split('.')[0];
+    const GH_REPO = window.location.pathname.split('/')[1] || ""; 
 
-    // Jam Realtime
     setInterval(() => {
         const d = new Date();
         document.getElementById('jam').innerText = d.toLocaleTimeString('en-GB').replace(/:/g, '.');
         document.getElementById('tgl').innerText = d.toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'short', year:'numeric'}).toUpperCase();
     }, 1000);
 
-    // Fungsi Login
     function bukaAdmin() {
         let input = prompt("ID:");
         if (input === ID_AKSES) {
-            // Jika ID benar, cek apakah token sudah ada di memori browser
             if (!localStorage.getItem('gh_token')) {
-                let token = prompt("Ini pertama kali Anda login. Masukkan Token GitHub Anda:");
-                if (token) localStorage.setItem('gh_token', token);
+                let t = prompt("Masukkan Token GitHub Anda (Pastikan Token Benar):");
+                if (t) localStorage.setItem('gh_token', t);
             }
             document.getElementById('layar-update').style.display = 'flex';
-        } else if (input !== null) {
-            alert("Akses Ditolak!");
-        }
+        } else if (input !== null) alert("Akses Ditolak!");
     }
 
     function tutupAdmin() { document.getElementById('layar-update').style.display = 'none'; }
-    function resetAkses() { localStorage.removeItem('gh_token'); alert("Token dihapus. Anda akan diminta mengisi token lagi saat login nanti."); location.reload(); }
+    function resetAkses() { localStorage.clear(); alert("Sistem direset. Silakan login ulang."); location.reload(); }
 
-    // Ambil Data
     async function init() {
         try {
             const res = await fetch('data.json?v=' + Date.now());
             dataGlobal = await res.json();
-            
             document.getElementById('area-stok').innerHTML = dataGlobal.map(item => `
-                <div class="kartu">
-                    <span class="text-[12px] font-bold tracking-widest uppercase opacity-70">${item.nama}</span>
-                    <span class="text-4xl font-bold">${item.nilai}</span>
-                </div>
+                <div class="kartu"><span class="text-[12px] font-bold tracking-widest uppercase opacity-70">${item.nama}</span><span class="text-4xl font-bold">${item.nilai}</span></div>
             `).join('');
-
             document.getElementById('form-edit').innerHTML = dataGlobal.map((item, i) => `
-                <div>
-                    <label class="text-[10px] opacity-40 uppercase mb-2 block font-bold text-center">${item.nama}</label>
-                    <input type="text" id="inp-${i}" value="${item.nilai}">
-                </div>
+                <div><label class="text-[10px] opacity-40 uppercase mb-2 block text-center font-bold">${item.nama}</label><input type="text" id="inp-${i}" value="${item.nilai}"></div>
             `).join('');
-        } catch (e) { document.getElementById('area-stok').innerHTML = "<p class='text-center opacity-30'>File data.json belum tersedia.</p>"; }
+        } catch (e) { console.log("data.json belum ada"); }
     }
 
-    // Simpan ke GitHub
     async function simpanData() {
         const token = localStorage.getItem('gh_token');
-        if(!token) return alert("Token tidak ditemukan. Silakan Reset Token dan login kembali.");
-
         const btn = document.getElementById('btn-save');
-        btn.disabled = true; btn.innerText = "Proses...";
+        const stat = document.getElementById('status');
+
+        if(!token) return alert("Token tidak ditemukan!");
+        btn.disabled = true; btn.innerText = "MENGIRIM...";
+        stat.innerText = "Menghubungkan ke GitHub...";
 
         try {
-            const get = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/data.json`);
-            const file = await get.json();
+            // 1. Ambil File untuk mendapatkan SHA
+            const get = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/data.json`, {
+                headers: { 'Authorization': `token ${token}` }
+            });
 
+            if(get.status === 404) {
+                throw "File data.json tidak ketemu di repo. Pastikan nama repo di link sudah benar.";
+            } else if(get.status === 401) {
+                localStorage.removeItem('gh_token');
+                throw "Token SALAH atau EXPIRED. Token otomatis dihapus, silakan login lagi.";
+            }
+
+            const file = await get.json();
             const baru = dataGlobal.map((item, i) => ({
                 nama: item.nama,
                 nilai: document.getElementById('inp-' + i).value
             }));
 
+            // 2. Kirim Update
             const res = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/data.json`, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
@@ -135,9 +123,16 @@
                 })
             });
 
-            if(res.ok) { alert("Berhasil!"); location.reload(); }
-            else { alert("Gagal! Mungkin Token salah."); localStorage.removeItem('gh_token'); btn.disabled = false; btn.innerText = "Simpan Perubahan"; }
-        } catch (e) { alert("Kesalahan koneksi."); btn.disabled = false; }
+            if(res.ok) {
+                stat.innerHTML = "<span class='text-green-500 font-bold'>BERHASIL!</span><br>Tunggu 1 menit lalu refresh halaman dashboard.";
+                setTimeout(() => location.reload(), 2000);
+            } else {
+                throw "Gagal kirim data. Cek koneksi internet.";
+            }
+        } catch (e) {
+            stat.innerHTML = `<span class='text-red-500'>ERROR: ${e}</span>`;
+            btn.disabled = false; btn.innerText = "SIMPAN PERUBAHAN";
+        }
     }
 
     init();
