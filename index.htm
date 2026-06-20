@@ -3,23 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fase Selular Pakam - Fixed</title>
+    <title>Dashboard Fase Selular Pakam - Toko</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Kanit:ital,wght@1,700&display=swap" rel="stylesheet">
     <style>
         body { background-color: #b0b0b0; font-family: 'Orbitron', sans-serif; margin: 0; padding: 20px; color: #333; }
         .judul-emas { color: #facc15; font-family: 'Kanit', sans-serif; font-style: italic; font-weight: 800; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
-        .kartu { background: #0c0c0c; color: white; border-radius: 12px; padding: 25px; display: flex; justify-content: space-between; align-items: center; max-width: 500px; margin: 10px auto; }
+        
+        /* Kartu Utama - Bisa Diklik */
+        .kartu { 
+            background: #0c0c0c; color: white; border-radius: 12px; padding: 25px; 
+            display: flex; justify-content: space-between; align-items: center; 
+            max-width: 600px; margin: 10px auto; cursor: pointer; transition: 0.3s;
+        }
+        .kartu:hover { transform: scale(1.02); background: #1a1a1a; }
+
+        /* Layar Galeri (Muncul di Bawah) */
+        #layar-galeri { display: none; margin-top: 40px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 20px; }
+        .galeri-item { background: rgba(0,0,0,0.85); border-radius: 12px; overflow: hidden; color: white; border: 1px solid #4a5d23; }
+        
+        /* Layar Admin */
         #layar-update { position: fixed; inset: 0; background: #111; color: white; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
-        input { background: #222; border: 1px solid #444; color: white; padding: 12px; border-radius: 8px; width: 100%; max-width: 300px; outline: none; margin-bottom: 10px; font-size: 16px; text-align: center; }
-        .btn-kuning { background: #d9a406; color: white; padding: 14px; border-radius: 8px; width: 100%; max-width: 300px; font-weight: bold; text-transform: uppercase; }
-        #status { font-size: 10px; margin-top: 15px; text-align: center; max-width: 300px; }
+        textarea { background: #222; border: 1px solid #444; color: #00ff00; padding: 10px; border-radius: 8px; width: 100%; max-width: 500px; height: 300px; font-family: monospace; font-size: 10px; }
     </style>
 </head>
 <body>
 
+    <!-- Header -->
     <div class="flex justify-between items-start mb-10">
-        <div class="text-[10px] font-bold opacity-40">AUTO-SYSTEM V8</div>
+        <div class="text-[10px] font-bold opacity-40 uppercase">V.9.0 - SHOP SYSTEM</div>
         <div class="text-center">
             <h2 id="jam" class="text-2xl font-bold tracking-widest text-blue-900">00.00.00</h2>
             <p id="tgl" class="text-[9px] opacity-60 uppercase">MINGGU, 21 JUN 2026</p>
@@ -27,27 +39,41 @@
         <button onclick="bukaAdmin()" class="border border-black/20 px-3 py-1 text-[10px] rounded font-bold">LOGIN</button>
     </div>
 
+    <!-- Judul -->
     <div class="text-center mb-10">
         <h1 class="text-5xl judul-emas italic uppercase">FASE SELULAR</h1>
         <h1 class="text-5xl judul-emas italic uppercase mb-2">PAKAM</h1>
+        <p class="text-[9px] tracking-[0.4em] font-bold opacity-50 uppercase">Klik kartu untuk melihat barang</p>
     </div>
 
+    <!-- Area Stok Utama -->
     <div id="area-stok"></div>
 
+    <!-- AREA GALERI (MUNCUL SAAT DIKLIK) -->
+    <div id="layar-galeri" class="max-w-4xl mx-auto">
+        <div class="flex justify-between items-center mb-4 border-b border-blue-900 pb-2">
+            <h3 id="nama-kategori" class="italic text-blue-900 font-bold text-sm uppercase">KATEGORI</h3>
+            <button onclick="tutupGaleri()" class="bg-black text-white text-[9px] px-3 py-1 rounded uppercase">CLOSE X</button>
+        </div>
+        <div id="grid-galeri" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <!-- Gambar barang akan muncul di sini -->
+        </div>
+    </div>
+
+    <!-- LAYAR UPDATE (KHUSUS ADMIN) -->
     <div id="layar-update">
-        <h2 class="text-yellow-500 font-bold mb-8 tracking-widest uppercase text-sm">Update Stok Toko</h2>
-        <div id="form-edit" class="w-full max-w-[300px] mb-6 space-y-4"></div>
-        <button onclick="simpanData()" id="btn-save" class="btn-kuning">Simpan Perubahan</button>
-        <div id="status"></div>
-        <button onclick="tutupAdmin()" class="mt-8 text-[10px] opacity-40 uppercase">Kembali</button>
-        <button onclick="resetAkses()" class="mt-10 text-[8px] opacity-20 uppercase">Hapus Token & Reset</button>
+        <h2 class="text-yellow-500 font-bold mb-4 uppercase text-sm">JSON DATA EDITOR</h2>
+        <p class="text-[9px] opacity-50 mb-4 italic">Edit link gambar dan stok di sini</p>
+        <textarea id="json-editor"></textarea>
+        <button onclick="simpanData()" id="btn-save" class="bg-yellow-600 w-full max-w-[500px] p-3 rounded font-bold mt-4 uppercase">Simpan Perubahan</button>
+        <button onclick="tutupAdmin()" class="mt-6 text-[10px] opacity-40 uppercase">Kembali</button>
+        <p id="status" class="mt-4 text-xs font-bold"></p>
     </div>
 
 <script>
     const ID_AKSES = "admin123"; 
-    let dataGlobal = [];
+    let fullData = {};
 
-    // Deteksi Otomatis User & Repo yang lebih akurat
     const GH_USER = window.location.hostname.split('.')[0];
     const GH_REPO = window.location.pathname.split('/')[1] || ""; 
 
@@ -57,82 +83,89 @@
         document.getElementById('tgl').innerText = d.toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'short', year:'numeric'}).toUpperCase();
     }, 1000);
 
+    // Muat Data
+    async function init() {
+        try {
+            const res = await fetch('data.json?v=' + Date.now());
+            fullData = await res.json();
+            
+            // Tampilkan kartu utama
+            document.getElementById('area-stok').innerHTML = fullData.categories.map(cat => `
+                <div class="kartu" onclick="bukaGaleri('${cat.id}', '${cat.name}')">
+                    <span class="label-stok uppercase text-[12px] font-bold tracking-widest opacity-70">${cat.name}</span>
+                    <span class="text-4xl font-bold">${cat.value}</span>
+                </div>
+            `).join('');
+
+            document.getElementById('json-editor').value = JSON.stringify(fullData, null, 2);
+        } catch (e) { console.log("Gagal muat data.json"); }
+    }
+
+    // Fungsi Buka Galeri (Sesuai Gambar 2)
+    function bukaGaleri(id, nama) {
+        document.getElementById('nama-kategori').innerText = nama;
+        const grid = document.getElementById('grid-galeri');
+        grid.innerHTML = '';
+
+        // Filter barang berdasarkan kategori
+        const items = fullData.items.filter(item => item.categoryId === id);
+
+        if(items.length === 0) {
+            grid.innerHTML = "<p class='col-span-2 text-center py-10 opacity-40 italic'>Belum ada barang di kategori ini.</p>";
+        } else {
+            grid.innerHTML = items.map(i => `
+                <div class="galeri-item shadow-lg">
+                    <img src="${i.img}" class="w-full h-32 object-cover bg-gray-800" onerror="this.src='https://via.placeholder.com/300?text=Foto+Kosong'">
+                    <div class="p-3">
+                        <p class="text-[10px] font-bold uppercase mb-1">${i.title}</p>
+                        <p class="text-[9px] opacity-60 uppercase">${i.desc}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+        document.getElementById('layar-galeri').style.display = 'block';
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
+    function tutupGaleri() { document.getElementById('layar-galeri').style.display = 'none'; }
     function bukaAdmin() {
         let input = prompt("ID:");
         if (input === ID_AKSES) {
             if (!localStorage.getItem('gh_token')) {
-                let t = prompt("Masukkan Token GitHub Anda (Pastikan Token Benar):");
+                let t = prompt("Masukkan Token GitHub:");
                 if (t) localStorage.setItem('gh_token', t);
             }
             document.getElementById('layar-update').style.display = 'flex';
-        } else if (input !== null) alert("Akses Ditolak!");
+        }
     }
-
     function tutupAdmin() { document.getElementById('layar-update').style.display = 'none'; }
-    function resetAkses() { localStorage.clear(); alert("Sistem direset. Silakan login ulang."); location.reload(); }
 
-    async function init() {
-        try {
-            const res = await fetch('data.json?v=' + Date.now());
-            dataGlobal = await res.json();
-            document.getElementById('area-stok').innerHTML = dataGlobal.map(item => `
-                <div class="kartu"><span class="text-[12px] font-bold tracking-widest uppercase opacity-70">${item.nama}</span><span class="text-4xl font-bold">${item.nilai}</span></div>
-            `).join('');
-            document.getElementById('form-edit').innerHTML = dataGlobal.map((item, i) => `
-                <div><label class="text-[10px] opacity-40 uppercase mb-2 block text-center font-bold">${item.nama}</label><input type="text" id="inp-${i}" value="${item.nilai}"></div>
-            `).join('');
-        } catch (e) { console.log("data.json belum ada"); }
-    }
-
+    // Simpan Perubahan
     async function simpanData() {
         const token = localStorage.getItem('gh_token');
+        if(!token) return alert("Token tidak ada!");
+        
         const btn = document.getElementById('btn-save');
-        const stat = document.getElementById('status');
-
-        if(!token) return alert("Token tidak ditemukan!");
-        btn.disabled = true; btn.innerText = "MENGIRIM...";
-        stat.innerText = "Menghubungkan ke GitHub...";
+        btn.disabled = true; btn.innerText = "PROSES...";
 
         try {
-            // 1. Ambil File untuk mendapatkan SHA
-            const get = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/data.json`, {
-                headers: { 'Authorization': `token ${token}` }
-            });
-
-            if(get.status === 404) {
-                throw "File data.json tidak ketemu di repo. Pastikan nama repo di link sudah benar.";
-            } else if(get.status === 401) {
-                localStorage.removeItem('gh_token');
-                throw "Token SALAH atau EXPIRED. Token otomatis dihapus, silakan login lagi.";
-            }
-
+            const get = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/data.json`);
             const file = await get.json();
-            const baru = dataGlobal.map((item, i) => ({
-                nama: item.nama,
-                nilai: document.getElementById('inp-' + i).value
-            }));
+            const content = document.getElementById('json-editor').value;
 
-            // 2. Kirim Update
             const res = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/data.json`, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    message: "Update Stok",
-                    content: btoa(JSON.stringify(baru, null, 2)),
+                    message: "Update Galeri & Stok",
+                    content: btoa(content),
                     sha: file.sha
                 })
             });
 
-            if(res.ok) {
-                stat.innerHTML = "<span class='text-green-500 font-bold'>BERHASIL!</span><br>Tunggu 1 menit lalu refresh halaman dashboard.";
-                setTimeout(() => location.reload(), 2000);
-            } else {
-                throw "Gagal kirim data. Cek koneksi internet.";
-            }
-        } catch (e) {
-            stat.innerHTML = `<span class='text-red-500'>ERROR: ${e}</span>`;
-            btn.disabled = false; btn.innerText = "SIMPAN PERUBAHAN";
-        }
+            if(res.ok) { alert("Berhasil Terupdate!"); location.reload(); }
+            else { alert("Gagal!"); btn.disabled = false; btn.innerText = "Simpan Perubahan"; }
+        } catch (e) { alert("Error!"); btn.disabled = false; }
     }
 
     init();
