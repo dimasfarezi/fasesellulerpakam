@@ -1,6 +1,5 @@
 [
-  { "nama": "STOK PULSA (K)", "nilai": "2.500" },
-  { "nama": "PAKET DATA", "nilai": "45" },
-  { "nama": "SALDO TOKO", "nilai": "1.250" },
-  { "nama": "TERJUAL HARI INI", "nilai": "12" }
+  { "nama": "stok kartu", "nilai": "3" },
+  { "nama": "stok handphone", "nilai": "5" },
+  { "nama": "stok barang", "nilai": "4" }
 ]
