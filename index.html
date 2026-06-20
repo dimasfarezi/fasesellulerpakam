@@ -3,171 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Putra Barokah Farm</title>
+    <title>Putra Barokah Farm - Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Kanit:ital,wght@1,700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Kanit:ital,wght@1,700&display=swap" rel="stylesheet">
     <style>
         body {
-            background: url('https://images.unsplash.com/photo-1542332213-9b5a5a3fab35?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            font-family: 'Roboto', sans-serif;
-            color: white;
-            min-height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1542332213-9b5a5a3fab35?fit=crop&w=1000&q=80');
+            background-size: cover; background-attachment: fixed;
+            font-family: 'Orbitron', sans-serif; color: white; min-height: 100vh;
         }
-        .overlay { background: rgba(0, 0, 0, 0.4); min-height: 100vh; width: 100%; }
-        .font-digital { font-family: 'Orbitron', sans-serif; }
-        .font-italic-bold { font-family: 'Kanit', sans-serif; font-style: italic; }
-        
-        /* Box Utama */
-        .card-main {
-            background: rgba(13, 18, 1, 0.9);
-            border: 1px solid #333;
-            border-radius: 15px;
-            padding: 20px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        /* Card Detail Bawah */
-        .card-detail {
-            background: rgba(13, 18, 1, 0.95);
-            border: 1px solid #4a5d23;
-            border-radius: 10px;
-            overflow: hidden;
-            width: 100%;
-        }
-        .img-placeholder {
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-            background: #222;
-        }
-        .gold-text { color: #eab308; }
+        .glass { background: rgba(13, 18, 1, 0.85); border: 1px solid #333; border-radius: 12px; }
+        .gold-text { color: #eab308; font-family: 'Kanit', sans-serif; font-style: italic; }
     </style>
 </head>
-<body>
-<div class="overlay p-4">
-    
+<body class="p-4">
+
     <!-- Header -->
-    <header class="flex justify-between items-start mb-6">
-        <img src="https://via.placeholder.com/50" alt="Logo" class="rounded-full border border-white/20">
+    <header class="flex justify-between items-center mb-10">
+        <div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center border border-white/20">Logo</div>
         <div class="text-center">
-            <h2 id="clock" class="text-2xl font-digital font-bold tracking-widest text-blue-100">05.13.17</h2>
-            <p id="date" class="text-[9px] font-digital opacity-60 uppercase">MINGGU, 21 JUN 2026</p>
+            <h2 id="clock" class="text-2xl font-bold tracking-widest text-blue-100">00:00:00</h2>
+            <p id="date" class="text-[10px] opacity-60 uppercase">MINGGU, 21 JUN 2026</p>
         </div>
-        <button class="border border-white/40 px-3 py-1 text-[9px] rounded uppercase bg-black/20">Login</button>
+        <button onclick="toggleAdmin()" class="border border-white/40 px-3 py-1 text-[10px] rounded uppercase hover:bg-white/20">LOGIN</button>
     </header>
 
-    <!-- Title Section -->
+    <!-- Judul Utama -->
     <div class="text-center mb-8">
-        <h1 class="text-4xl font-italic-bold gold-text leading-none">PUTRA BAROKAH</h1>
-        <h1 class="text-4xl font-italic-bold gold-text mb-1">FARM</h1>
-        <p class="text-[10px] tracking-[0.4em] font-digital opacity-70">GENERASI PETERNAK MODERN</p>
+        <h1 class="text-4xl gold-text leading-tight">PUTRA BAROKAH</h1>
+        <h1 class="text-4xl gold-text mb-2">FARM</h1>
+        <p class="text-[9px] tracking-[0.4em] opacity-70 border-t border-white/20 pt-2 inline-block">GENERASI PETERNAK MODERN</p>
     </div>
 
-    <!-- Main List (INDUKAN, PEJANTAN, CEMPE) -->
-    <div id="main-summary" class="max-w-xl mx-auto space-y-3 mb-10">
-        <!-- Data akan masuk ke sini -->
+    <!-- Tampilan Publik (Display Only) -->
+    <div id="public-view" class="max-w-md mx-auto space-y-3">
+        <div class="text-center italic opacity-50">Memuat data...</div>
     </div>
 
-    <!-- Detail Section (Bagian Bawah) -->
-    <div class="max-w-4xl mx-auto">
-        <div class="flex justify-between items-center border-b border-blue-900 pb-1 mb-4">
-            <h3 class="text-blue-400 font-italic-bold text-sm italic">PEJANTAN</h3>
-            <button class="bg-black/80 text-[8px] px-2 py-1 rounded border border-white/20">CLOSE X</button>
+    <!-- Form Admin (Tersembunyi) -->
+    <div id="admin-panel" class="hidden fixed inset-0 bg-black/90 z-50 p-6 overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl gold-text">UPDATE STOK</h2>
+            <button onclick="toggleAdmin()" class="text-red-500">TUTUP [X]</button>
         </div>
-
-        <div id="detail-list" class="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <!-- Item Pejantan akan masuk ke sini -->
+        
+        <div class="space-y-4 max-w-sm mx-auto">
+            <input type="password" id="gh-token" placeholder="Masukkan Token GitHub Anda" class="w-full p-3 bg-gray-800 rounded border border-gray-600 outline-none">
+            <div id="edit-fields" class="space-y-4">
+                <!-- Input field akan muncul di sini -->
+            </div>
+            <button onclick="saveData()" id="btn-save" class="w-full bg-yellow-600 p-3 rounded font-bold hover:bg-yellow-500">SIMPAN PERUBAHAN</button>
+            <p id="status" class="text-center text-xs mt-2 text-yellow-400"></p>
         </div>
     </div>
-
-</div>
 
 <script>
-    // Live Clock
-    function updateTime() {
-        const now = new Date();
-        document.getElementById('clock').innerText = now.getHours().toString().padStart(2, '0') + '.' + now.getMinutes().toString().padStart(2, '0') + '.' + now.getSeconds().toString().padStart(2, '0');
-        const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
-        document.getElementById('date').innerText = now.toLocaleDateString('id-ID', options).toUpperCase();
-    }
-    setInterval(updateTime, 1000);
-    updateTime();
+    // Konfigurasi Repo Anda
+    const GITHUB_USER = "USERNAME_ANDA"; // <--- Ganti dengan Username GitHub Anda
+    const GITHUB_REPO = "NAMA_REPO_ANDA"; // <--- Ganti dengan Nama Repository Anda
+    const FILE_PATH = "data.json";
 
-    // Load Data From GitHub JSON
+    let currentData = [];
+    let fileSha = "";
+
+    // Jam Realtime
+    setInterval(() => {
+        const now = new Date();
+        document.getElementById('clock').innerText = now.toLocaleTimeString('en-GB').replace(/:/g, '.');
+        document.getElementById('date').innerText = now.toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'short', year:'numeric'}).toUpperCase();
+    }, 1000);
+
+    // Ambil Data
     async function loadData() {
         try {
-            const res = await fetch('data.json?v=' + Date.now());
-            const data = await res.json();
+            const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${FILE_PATH}`);
+            const json = await res.json();
+            fileSha = json.sha; // Simpan SHA untuk update nanti
+            currentData = JSON.parse(atob(json.content));
             
-            // 1. Render Summary (Atas)
-            const summaryBox = document.getElementById('main-summary');
-            summaryBox.innerHTML = '';
-            data.summary.forEach(item => {
-                summaryBox.innerHTML += `
-                    <div class="card-main">
-                        <span class="font-digital font-bold text-sm tracking-widest uppercase">${item.label}</span>
-                        <span class="text-4xl font-digital font-bold">${item.value}</span>
-                    </div>
-                `;
+            renderPublicView();
+            renderAdminFields();
+        } catch (e) { alert("Gagal ambil data. Cek settingan Repo!"); }
+    }
+
+    function renderPublicView() {
+        const container = document.getElementById('public-view');
+        container.innerHTML = currentData.map(item => `
+            <div class="glass flex justify-between items-center p-6 shadow-xl">
+                <span class="text-sm font-bold tracking-widest uppercase">${item.label}</span>
+                <span class="text-4xl font-bold">${item.value}</span>
+            </div>
+        `).join('');
+    }
+
+    function renderAdminFields() {
+        const container = document.getElementById('edit-fields');
+        container.innerHTML = currentData.map((item, index) => `
+            <div>
+                <label class="text-[10px] opacity-50 uppercase">${item.label}</label>
+                <input type="text" id="input-${index}" value="${item.value}" class="w-full p-3 bg-gray-700 rounded outline-none border border-gray-600">
+            </div>
+        `).join('');
+    }
+
+    function toggleAdmin() {
+        document.getElementById('admin-panel').classList.toggle('hidden');
+    }
+
+    async function saveData() {
+        const token = document.getElementById('gh-token').value;
+        const btn = document.getElementById('btn-save');
+        const status = document.getElementById('status');
+        
+        if (!token) return alert("Token wajib diisi!");
+
+        btn.disabled = true;
+        status.innerText = "Sedang menyimpan...";
+
+        // Ambil data baru dari input
+        const newData = currentData.map((item, index) => ({
+            label: item.label,
+            value: document.getElementById(`input-${index}`).value
+        }));
+
+        try {
+            const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${FILE_PATH}`, {
+                method: 'PUT',
+                headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    message: "Update data via Admin Web",
+                    content: btoa(JSON.stringify(newData, null, 2)),
+                    sha: fileSha
+                })
             });
 
-            // 2. Render Details (Bawah)
-            const detailBox = document.getElementById('detail-list');
-            detailBox.innerHTML = '';
-            data.details.forEach(animal => {
-                detailBox.innerHTML += `
-                    <div class="card-detail">
-                        <img src="${animal.image}" alt="${animal.name}" class="img-placeholder" onerror="this.src='https://via.placeholder.com/150x100?text=No+Image'">
-                        <div class="p-2 bg-[#0d1201]">
-                            <p class="text-[10px] font-bold uppercase">${animal.name}</p>
-                            <p class="text-[9px] opacity-60">${animal.weight}</p>
-                        </div>
-                    </div>
-                `;
-            });
-        } catch (e) { console.error("Data error"); }
+            if (res.ok) {
+                status.innerText = "✅ BERHASIL DIUPDATE!";
+                setTimeout(() => location.reload(), 1500);
+            } else {
+                status.innerText = "❌ GAGAL! Cek Token Anda.";
+            }
+        } catch (e) {
+            status.innerText = "Terjadi kesalahan koneksi.";
+        } finally {
+            btn.disabled = false;
+        }
     }
+
     loadData();
 </script>
 </body>
 </html>
-2. File: data.json
-Update file ini di GitHub untuk merubah isi data (Jumlah hewan & detailnya):
-code
-JSON
-{
-  "summary": [
-    { "label": "INDUKAN", "value": "3" },
-    { "label": "PEJANTAN", "value": "5" },
-    { "label": "CEMPE", "value": "4" }
-  ],
-  "details": [
-    {
-      "name": "ALEX",
-      "weight": "10 KG",
-      "image": "https://cdn-icons-png.flaticon.com/512/1998/1998668.png"
-    },
-    {
-      "name": "ALENG",
-      "weight": "30 KG",
-      "image": "https://via.placeholder.com/200x150"
-    },
-    {
-      "name": "JI SONG",
-      "weight": "60 KG",
-      "image": "https://via.placeholder.com/200x150"
-    },
-    {
-      "name": "BAGONG",
-      "weight": "100 KG",
-      "image": "https://via.placeholder.com/200x150"
-    }
-  ]
-}
