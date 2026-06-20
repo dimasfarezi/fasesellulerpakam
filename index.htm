@@ -3,80 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Fase Selular Pakam - Toko</title>
+    <title>Dashboard Fase Selular Pakam</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Kanit:ital,wght@1,700&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #b0b0b0; font-family: 'Orbitron', sans-serif; margin: 0; padding: 20px; color: #333; }
-        .judul-emas { color: #facc15; font-family: 'Kanit', sans-serif; font-style: italic; font-weight: 800; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
-        
-        /* Kartu Utama - Bisa Diklik */
-        .kartu { 
-            background: #0c0c0c; color: white; border-radius: 12px; padding: 25px; 
-            display: flex; justify-content: space-between; align-items: center; 
-            max-width: 600px; margin: 10px auto; cursor: pointer; transition: 0.3s;
+        body {
+            /* Background Bambu Hijau sesuai gambar */
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1542332213-9b5a5a3fab35?fit=crop&w=1200&q=80');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            font-family: 'Orbitron', sans-serif; color: white; min-height: 100vh; margin: 0; padding: 20px;
         }
-        .kartu:hover { transform: scale(1.02); background: #1a1a1a; }
+        .judul-emas {
+            color: #facc15; font-family: 'Kanit', sans-serif; font-style: italic; font-weight: 800;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.8); line-height: 1.1;
+        }
+        /* Kartu Utama Dashboard */
+        .kartu-utama {
+            background: rgba(13, 18, 1, 0.9); border-radius: 15px; padding: 25px;
+            display: flex; justify-content: space-between; align-items: center;
+            max-width: 600px; margin: 12px auto; border-bottom: 4px solid #111;
+            cursor: pointer; transition: 0.3s;
+        }
+        .kartu-utama:hover { background: rgba(30, 40, 10, 0.9); transform: scale(1.02); }
 
-        /* Layar Galeri (Muncul di Bawah) */
-        #layar-galeri { display: none; margin-top: 40px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 20px; }
-        .galeri-item { background: rgba(0,0,0,0.85); border-radius: 12px; overflow: hidden; color: white; border: 1px solid #4a5d23; }
+        /* Galeri Gambar (Muncul saat diklik) */
+        #area-galeri { display: none; margin-top: 50px; }
+        .kartu-barang {
+            background: rgba(13, 18, 1, 0.95); border: 1px solid #4a5d23;
+            border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .img-barang { width: 100%; height: 140px; object-fit: cover; background: #222; }
         
         /* Layar Admin */
-        #layar-update { position: fixed; inset: 0; background: #111; color: white; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
-        textarea { background: #222; border: 1px solid #444; color: #00ff00; padding: 10px; border-radius: 8px; width: 100%; max-width: 500px; height: 300px; font-family: monospace; font-size: 10px; }
+        #layar-admin {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.98);
+            display: none; z-index: 1000; padding: 20px; overflow-y: auto;
+        }
+        .input-admin { background: #222; border: 1px solid #444; color: white; padding: 10px; border-radius: 5px; width: 100%; outline: none; }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <div class="flex justify-between items-start mb-10">
-        <div class="text-[10px] font-bold opacity-40 uppercase">V.9.0 - SHOP SYSTEM</div>
+    <!-- Navigasi Atas -->
+    <div class="flex justify-between items-center mb-10">
+        <div class="w-10 h-10 border border-white/20 bg-black/40 flex items-center justify-center text-[8px] rounded uppercase font-bold">Logo</div>
         <div class="text-center">
-            <h2 id="jam" class="text-2xl font-bold tracking-widest text-blue-900">00.00.00</h2>
-            <p id="tgl" class="text-[9px] opacity-60 uppercase">MINGGU, 21 JUN 2026</p>
+            <h2 id="jam" class="text-2xl font-bold tracking-widest text-blue-100">00.00.00</h2>
+            <p id="tgl" class="text-[9px] opacity-60">MINGGU, 21 JUN 2026</p>
         </div>
-        <button onclick="bukaAdmin()" class="border border-black/20 px-3 py-1 text-[10px] rounded font-bold">LOGIN</button>
+        <button onclick="loginAkses()" class="border border-white/40 px-3 py-1 text-[9px] rounded uppercase bg-black/40">LOGIN</button>
     </div>
 
-    <!-- Judul -->
-    <div class="text-center mb-10">
-        <h1 class="text-5xl judul-emas italic uppercase">FASE SELULAR</h1>
-        <h1 class="text-5xl judul-emas italic uppercase mb-2">PAKAM</h1>
-        <p class="text-[9px] tracking-[0.4em] font-bold opacity-50 uppercase">Klik kartu untuk melihat barang</p>
+    <!-- Judul Utama -->
+    <div class="text-center mb-16">
+        <h1 class="text-6xl judul-emas uppercase">FASE SELULAR</h1>
+        <h1 class="text-6xl judul-emas mb-4 uppercase">PAKAM</h1>
+        <p class="text-[10px] tracking-[0.4em] text-white/70 uppercase">Generasi Peternak Modern</p>
     </div>
 
-    <!-- Area Stok Utama -->
-    <div id="area-stok"></div>
+    <!-- Area List Stok -->
+    <div id="list-stok-utama">
+        <p class="text-center italic opacity-40">Memuat data...</p>
+    </div>
 
-    <!-- AREA GALERI (MUNCUL SAAT DIKLIK) -->
-    <div id="layar-galeri" class="max-w-4xl mx-auto">
-        <div class="flex justify-between items-center mb-4 border-b border-blue-900 pb-2">
-            <h3 id="nama-kategori" class="italic text-blue-900 font-bold text-sm uppercase">KATEGORI</h3>
-            <button onclick="tutupGaleri()" class="bg-black text-white text-[9px] px-3 py-1 rounded uppercase">CLOSE X</button>
+    <!-- AREA GALERI (MUNCUL DI BAWAH SAAT KARTU DIKLIK) -->
+    <div id="area-galeri" class="max-w-5xl mx-auto">
+        <div class="flex justify-between items-center mb-4 border-b border-yellow-600/30 pb-2">
+            <h3 id="judul-kategori" class="italic text-yellow-500 font-bold text-sm uppercase">KATEGORI</h3>
+            <button onclick="tutupGaleri()" class="bg-black/80 text-[8px] px-3 py-1 rounded border border-white/20 uppercase">Tutup X</button>
         </div>
-        <div id="grid-galeri" class="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <!-- Gambar barang akan muncul di sini -->
+        <div id="grid-barang" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <!-- Galeri produk muncul di sini -->
         </div>
     </div>
 
-    <!-- LAYAR UPDATE (KHUSUS ADMIN) -->
-    <div id="layar-update">
-        <h2 class="text-yellow-500 font-bold mb-4 uppercase text-sm">JSON DATA EDITOR</h2>
-        <p class="text-[9px] opacity-50 mb-4 italic">Edit link gambar dan stok di sini</p>
-        <textarea id="json-editor"></textarea>
-        <button onclick="simpanData()" id="btn-save" class="bg-yellow-600 w-full max-w-[500px] p-3 rounded font-bold mt-4 uppercase">Simpan Perubahan</button>
-        <button onclick="tutupAdmin()" class="mt-6 text-[10px] opacity-40 uppercase">Kembali</button>
-        <p id="status" class="mt-4 text-xs font-bold"></p>
+    <!-- LAYAR ADMIN (KHUSUS UPDATE) -->
+    <div id="layar-admin">
+        <div class="max-w-md mx-auto pt-10">
+            <h2 class="text-yellow-500 font-bold text-center mb-8 tracking-widest uppercase">Update Data Toko</h2>
+            <div id="form-update" class="space-y-6">
+                <!-- Form edit muncul otomatis -->
+            </div>
+            <button onclick="simpanKeGithub()" id="btn-save" class="w-full bg-yellow-600 p-4 rounded font-bold uppercase mt-10 shadow-lg">Simpan Perubahan</button>
+            <button onclick="tutupAdmin()" class="w-full mt-6 text-[10px] opacity-40 uppercase">Kembali ke Dashboard</button>
+            <p id="status" class="text-center text-xs mt-4"></p>
+        </div>
     </div>
 
 <script>
-    const ID_AKSES = "admin123"; 
-    let fullData = {};
+    // --- PENGATURAN ID LOGIN ---
+    const ID_RAHASIA = "admin123"; 
+    // ---------------------------
 
+    let dataToko = {};
+
+    // Ambil Otomatis User & Repo dari URL
     const GH_USER = window.location.hostname.split('.')[0];
-    const GH_REPO = window.location.pathname.split('/')[1] || ""; 
+    const GH_REPO = window.location.pathname.split('/')[1] || "";
 
+    // Jam Realtime Digital
     setInterval(() => {
         const d = new Date();
         document.getElementById('jam').innerText = d.toLocaleTimeString('en-GB').replace(/:/g, '.');
@@ -87,88 +112,128 @@
     async function init() {
         try {
             const res = await fetch('data.json?v=' + Date.now());
-            fullData = await res.json();
-            
-            // Tampilkan kartu utama
-            document.getElementById('area-stok').innerHTML = fullData.categories.map(cat => `
-                <div class="kartu" onclick="bukaGaleri('${cat.id}', '${cat.name}')">
-                    <span class="label-stok uppercase text-[12px] font-bold tracking-widest opacity-70">${cat.name}</span>
-                    <span class="text-4xl font-bold">${cat.value}</span>
-                </div>
-            `).join('');
-
-            document.getElementById('json-editor').value = JSON.stringify(fullData, null, 2);
+            dataToko = await res.json();
+            renderDashboard();
         } catch (e) { console.log("Gagal muat data.json"); }
     }
 
-    // Fungsi Buka Galeri (Sesuai Gambar 2)
-    function bukaGaleri(id, nama) {
-        document.getElementById('nama-kategori').innerText = nama;
-        const grid = document.getElementById('grid-galeri');
-        grid.innerHTML = '';
+    function renderDashboard() {
+        // Kartu Utama
+        document.getElementById('list-stok-utama').innerHTML = dataToko.kategori.map(cat => `
+            <div class="kartu-utama shadow-2xl" onclick="bukaGaleri('${cat.id}', '${cat.nama}')">
+                <span class="text-sm font-bold tracking-widest uppercase text-white/90">${cat.nama}</span>
+                <span class="text-4xl font-bold text-white">${cat.nilai}</span>
+            </div>
+        `).join('');
 
-        // Filter barang berdasarkan kategori
-        const items = fullData.items.filter(item => item.categoryId === id);
+        // Form Admin
+        document.getElementById('form-update').innerHTML = dataToko.kategori.map((cat, i) => `
+            <div>
+                <label class="text-[10px] opacity-40 uppercase mb-2 block font-bold">${cat.nama} (JUMLAH)</label>
+                <input type="text" id="val-${i}" value="${cat.nilai}" class="input-admin font-bold text-center text-xl">
+            </div>
+        `).join('');
+    }
 
-        if(items.length === 0) {
-            grid.innerHTML = "<p class='col-span-2 text-center py-10 opacity-40 italic'>Belum ada barang di kategori ini.</p>";
+    // Fungsi Klik Kartu (Munculkan Galeri)
+    function bukaGaleri(id, namaKategori) {
+        document.getElementById('judul-kategori').innerText = namaKategori + " TERSEDIA";
+        const grid = document.getElementById('grid-barang');
+        
+        // Filter barang sesuai kategori yang diklik
+        const barang = dataToko.barang.filter(b => b.kategoriId === id);
+        
+        if(barang.length === 0) {
+            grid.innerHTML = "<p class='col-span-2 text-center py-10 opacity-40 italic text-xs'>Belum ada barang di kategori ini.</p>";
         } else {
-            grid.innerHTML = items.map(i => `
-                <div class="galeri-item shadow-lg">
-                    <img src="${i.img}" class="w-full h-32 object-cover bg-gray-800" onerror="this.src='https://via.placeholder.com/300?text=Foto+Kosong'">
-                    <div class="p-3">
-                        <p class="text-[10px] font-bold uppercase mb-1">${i.title}</p>
-                        <p class="text-[9px] opacity-60 uppercase">${i.desc}</p>
+            grid.innerHTML = barang.map(b => `
+                <div class="kartu-barang">
+                    <img src="${b.foto}" class="img-barang" onerror="this.src='https://via.placeholder.com/300?text=No+Image'">
+                    <div class="p-3 bg-[#0d1201]">
+                        <p class="text-[10px] font-bold uppercase mb-1">${b.nama}</p>
+                        <p class="text-[9px] text-yellow-500 font-bold uppercase">${b.info}</p>
                     </div>
                 </div>
             `).join('');
         }
-        document.getElementById('layar-galeri').style.display = 'block';
+        document.getElementById('area-galeri').style.display = 'block';
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
 
-    function tutupGaleri() { document.getElementById('layar-galeri').style.display = 'none'; }
-    function bukaAdmin() {
-        let input = prompt("ID:");
-        if (input === ID_AKSES) {
-            if (!localStorage.getItem('gh_token')) {
-                let t = prompt("Masukkan Token GitHub:");
-                if (t) localStorage.setItem('gh_token', t);
-            }
-            document.getElementById('layar-update').style.display = 'flex';
-        }
-    }
-    function tutupAdmin() { document.getElementById('layar-update').style.display = 'none'; }
+    function tutupGaleri() { document.getElementById('area-galeri').style.display = 'none'; }
 
-    // Simpan Perubahan
-    async function simpanData() {
-        const token = localStorage.getItem('gh_token');
-        if(!token) return alert("Token tidak ada!");
-        
+    // Sistem Login Prompt ID
+    function loginAkses() {
+        let input = prompt("ID:");
+        if (input === ID_RAHASIA) {
+            if (!localStorage.getItem('token_toko')) {
+                let t = prompt("Masukkan Token GitHub Anda:");
+                if (t) localStorage.setItem('token_toko', t);
+            }
+            document.getElementById('layar-admin').style.display = 'block';
+        } else if (input !== null) alert("Akses Ditolak!");
+    }
+
+    function tutupAdmin() { document.getElementById('layar-admin').style.display = 'none'; }
+
+    // Simpan Perubahan ke GitHub
+    async function simpanKeGithub() {
+        const token = localStorage.getItem('token_toko');
         const btn = document.getElementById('btn-save');
-        btn.disabled = true; btn.innerText = "PROSES...";
+        if(!token) return alert("Token tidak ada!");
+
+        btn.disabled = true; btn.innerText = "PROSES SIMPAN...";
 
         try {
             const get = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/data.json`);
             const file = await get.json();
-            const content = document.getElementById('json-editor').value;
+
+            // Ambil nilai baru dari input
+            dataToko.kategori.forEach((cat, i) => {
+                cat.nilai = document.getElementById('val-' + i).value;
+            });
 
             const res = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/data.json`, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    message: "Update Galeri & Stok",
-                    content: btoa(content),
+                    message: "Update Stok",
+                    content: btoa(JSON.stringify(dataToko, null, 2)),
                     sha: file.sha
                 })
             });
 
             if(res.ok) { alert("Berhasil Terupdate!"); location.reload(); }
-            else { alert("Gagal!"); btn.disabled = false; btn.innerText = "Simpan Perubahan"; }
-        } catch (e) { alert("Error!"); btn.disabled = false; }
+            else { alert("Gagal Simpan! Token mungkin salah."); localStorage.removeItem('token_toko'); btn.disabled = false; btn.innerText = "Simpan Perubahan"; }
+        } catch (e) { alert("Error Koneksi."); btn.disabled = false; }
     }
 
     init();
 </script>
 </body>
 </html>
+Penting: Isi File data.json
+Pastikan file data.json di GitHub Kakak memiliki format seperti ini agar sistem klik dan gambar berfungsi:
+code
+JSON
+{
+  "kategori": [
+    { "id": "kartu", "nama": "STOK KARTU", "nilai": "200.000" },
+    { "id": "hp", "nama": "STOK HANDPHONE", "nilai": "500.000" },
+    { "id": "barang", "nama": "STOK BARANG", "nilai": "300.000" }
+  ],
+  "barang": [
+    {
+      "kategoriId": "kartu",
+      "nama": "SIMPATI 10GB",
+      "info": "READY STOK",
+      "foto": "https://via.placeholder.com/300?text=Simpati"
+    },
+    {
+      "kategoriId": "hp",
+      "nama": "IPHONE 13",
+      "info": "NEW",
+      "foto": "https://via.placeholder.com/300?text=Iphone"
+    }
+  ]
+}
