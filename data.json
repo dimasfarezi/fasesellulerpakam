@@ -1,14 +1,14 @@
 [
   {
     "nama": "stok kartu",
-    "nilai": "123000"
+    "nilai": "10000"
   },
   {
     "nama": "stok handphone",
-    "nilai": "12000"
+    "nilai": "10000"
   },
   {
     "nama": "stok barang",
-    "nilai": "12000"
+    "nilai": "10000"
   }
 ]
