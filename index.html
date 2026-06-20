@@ -3,118 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Putra Barokah Farm</title>
+    <title>Fase Selular Pakam</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Kanit:ital,wght@1,700&display=swap" rel="stylesheet">
     <style>
         body {
-            background: #4a4a4a; /* Background abu-abu sesuai gambar */
+            background: #484b3d; /* Warna hijau olive tua sesuai gambar */
             font-family: 'Orbitron', sans-serif;
             color: white;
             min-height: 100vh;
+            margin: 0;
+            padding: 20px;
         }
-        .gold-text { color: #facc15; font-family: 'Kanit', sans-serif; font-style: italic; }
-        .glass-card {
-            background: rgba(0, 0, 0, 0.4);
+        /* Header Kotak Abu-abu sesuai gambar */
+        .header-box-wrap {
+            display: flex;
+            justify-content: center;
+            gap: 2px;
+            margin-top: 20px;
+        }
+        .header-box {
+            background: #9fa18a; /* Warna abu-abu kotak */
+            padding: 10px 20px;
+            color: #333;
+            font-family: 'Kanit', sans-serif;
+            font-style: italic;
+            font-weight: 800;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+        }
+        .line-subtitle {
+            font-size: 10px;
+            letter-spacing: 4px;
+            margin-top: 10px;
+            border-bottom: 1px solid white;
+            display: inline-block;
+            padding-bottom: 5px;
+            opacity: 0.9;
+        }
+        .card-stok {
+            background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+            border-radius: 8px;
             padding: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
         }
         #admin-panel {
             position: fixed; inset: 0; background: rgba(0,0,0,0.95);
-            display: none; padding: 20px; z-index: 100;
+            display: none; padding: 20px; z-index: 100; overflow-y: auto;
         }
     </style>
 </head>
-<body class="p-4">
+<body>
 
-    <!-- Top Navigation -->
-    <header class="flex justify-between items-center mb-10">
-        <div class="border border-white/40 px-2 py-1 text-[10px] rounded">Logo</div>
+    <!-- Navigasi Atas -->
+    <div class="flex justify-between items-center mb-6">
+        <div class="text-[8px] border border-white/20 p-1 rounded">V.1.0</div>
         <div class="text-center">
             <h2 id="clock" class="text-xl font-bold tracking-widest">00.00.00</h2>
             <p id="date" class="text-[9px] opacity-60 uppercase">MINGGU, 21 JUN 2026</p>
         </div>
         <button onclick="toggleAdmin()" class="border border-white/40 px-3 py-1 text-[9px] rounded uppercase">LOGIN</button>
-    </header>
-
-    <!-- Hero Title -->
-    <div class="text-center mb-12">
-        <h1 class="text-4xl gold-text">PUTRA BAROKAH</h1>
-        <h1 class="text-4xl gold-text mb-4">FARM</h1>
-        <div class="h-[1px] bg-white/20 w-32 mx-auto mb-2"></div>
-        <p class="text-[9px] tracking-[0.3em] opacity-60">GENERASI PETERNAK MODERN</p>
     </div>
 
-    <!-- Data Display -->
-    <div id="display-area" class="max-w-md mx-auto">
-        <p class="text-center italic opacity-50">Memuat data...</p>
+    <!-- Judul Header FASE SELULAR PAKAM -->
+    <div class="text-center mb-10">
+        <div class="header-box-wrap">
+            <div class="header-box">FASE SELULAR</div>
+            <div class="header-box">PAKAM</div>
+        </div>
+        <p class="line-subtitle">FASE SELLULAR PAKAM</p>
     </div>
 
-    <!-- Panel Admin -->
+    <!-- Area Tampilan Stok -->
+    <div id="data-area">
+        <p class="text-center italic opacity-50">Menghubungkan...</p>
+    </div>
+
+    <!-- Halaman Admin Update -->
     <div id="admin-panel">
         <div class="max-w-sm mx-auto pt-10">
-            <h2 class="text-yellow-500 mb-6 text-center">ADMIN UPDATE</h2>
-            <input type="password" id="gh-token" placeholder="Tempel Token GitHub Di Sini" class="w-full p-3 bg-gray-800 border border-gray-600 rounded mb-4 outline-none text-sm">
-            <div id="edit-form" class="space-y-4 mb-6"></div>
-            <button onclick="saveToGithub()" id="save-btn" class="w-full bg-yellow-600 p-3 rounded font-bold">SIMPAN PERUBAHAN</button>
-            <button onclick="toggleAdmin()" class="w-full text-gray-400 mt-4 text-xs">BATAL / KELUAR</button>
+            <h2 class="text-center mb-6 text-yellow-500 font-bold">MODE UPDATE DATA</h2>
+            <input type="password" id="gh-token" placeholder="Tempel Token GitHub" class="w-full p-3 bg-gray-800 border border-gray-600 rounded mb-4 outline-none text-white text-sm">
+            
+            <div id="form-edit" class="space-y-4 mb-6">
+                <!-- Input edit muncul di sini -->
+            </div>
+
+            <button onclick="simpanData()" id="btn-save" class="w-full bg-yellow-600 p-3 rounded font-bold">SIMPAN PERUBAHAN</button>
+            <button onclick="toggleAdmin()" class="w-full mt-4 text-xs opacity-50 italic">BATAL / KELUAR</button>
             <p id="status" class="text-center text-xs mt-4"></p>
         </div>
     </div>
 
 <script>
-    // --- PENTING: ISI BAGIAN INI ---
-    const USER = "USERNAME_GITHUB_ANDA"; 
-    const REPO = "NAMA_REPO_ANDA";
-    // ------------------------------
+    // --- GANTI SESUAI GITHUB ANDA ---
+    const USERNAME = "USERNAME_GITHUB_ANDA"; 
+    const REPOSITORY = "NAMA_REPO_ANDA";
+    // -------------------------------
 
-    let dataItems = [];
-    let sha = "";
+    let dataStok = [];
+    let currentSha = "";
 
-    // Jam Realtime
+    // Update Jam
     setInterval(() => {
         const d = new Date();
         document.getElementById('clock').innerText = d.toLocaleTimeString('en-GB').replace(/:/g, '.');
         document.getElementById('date').innerText = d.toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'short', year:'numeric'}).toUpperCase();
     }, 1000);
 
-    // Load Data
-    async function init() {
+    // Ambil Data
+    async function loadData() {
         try {
-            // Ambil data langsung dari file lokal (lebih cepat dan anti-gagal)
-            const res = await fetch('data.json?v=' + Date.now());
-            dataItems = await res.json();
+            const res = await fetch(`https://api.github.com/repos/${USERNAME}/${REPOSITORY}/contents/data.json?v=` + Date.now());
+            const json = await res.json();
+            currentSha = json.sha;
+            dataStok = JSON.parse(atob(json.content));
             
-            // Tampilkan Data
-            const area = document.getElementById('display-area');
-            area.innerHTML = dataItems.map(item => `
-                <div class="glass-card">
-                    <span class="text-xs font-bold tracking-widest uppercase opacity-70">${item.nama}</span>
-                    <span class="text-3xl font-bold">${item.nilai}</span>
-                </div>
-            `).join('');
-
-            // Siapkan Form Admin
-            document.getElementById('edit-form').innerHTML = dataItems.map((item, i) => `
-                <div>
-                    <label class="text-[10px] opacity-50 uppercase">${item.nama}</label>
-                    <input type="text" id="inp-${i}" value="${item.nilai}" class="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white">
-                </div>
-            `).join('');
-
-            // Ambil SHA untuk keperluan update GitHub API nanti
-            const api = await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/data.json`);
-            const apiRes = await api.json();
-            sha = apiRes.sha;
-
+            tampilkanKePublik();
+            siapkanFormAdmin();
         } catch (e) {
-            document.getElementById('display-area').innerHTML = "<p class='text-center text-red-400'>Gagal memuat data.json. Pastikan file sudah ada di GitHub.</p>";
+            document.getElementById('data-area').innerHTML = "<p class='text-center text-red-400 text-xs'>Gagal memuat data.json. Pastikan nama User & Repo benar di dalam kode.</p>";
         }
+    }
+
+    function tampilkanKePublik() {
+        const area = document.getElementById('data-area');
+        area.innerHTML = dataStok.map(item => `
+            <div class="card-stok">
+                <span class="text-[11px] font-bold tracking-widest opacity-70 uppercase">${item.nama}</span>
+                <span class="text-3xl font-bold">${item.nilai}</span>
+            </div>
+        `).join('');
+    }
+
+    function siapkanFormAdmin() {
+        document.getElementById('form-edit').innerHTML = dataStok.map((item, i) => `
+            <div>
+                <label class="text-[10px] opacity-50 uppercase">${item.nama}</label>
+                <input type="text" id="inp-${i}" value="${item.nilai}" class="w-full p-2 bg-gray-700 border border-gray-600 rounded text-white">
+            </div>
+        `).join('');
     }
 
     function toggleAdmin() {
@@ -122,33 +157,33 @@
         p.style.display = (p.style.display === 'block') ? 'none' : 'block';
     }
 
-    async function saveToGithub() {
+    async function simpanData() {
         const token = document.getElementById('gh-token').value;
-        if(!token) return alert("Masukkan Token GitHub Anda!");
+        if(!token) return alert("Masukkan Token GitHub!");
 
-        const btn = document.getElementById('save-btn');
+        const btn = document.getElementById('btn-save');
         const stat = document.getElementById('status');
-        btn.disabled = true; stat.innerText = "Mengirim data...";
+        btn.disabled = true; stat.innerText = "Mengirim perubahan...";
 
-        const newData = dataItems.map((item, i) => ({
+        const dataBaru = dataStok.map((item, i) => ({
             nama: item.nama,
             nilai: document.getElementById('inp-' + i).value
         }));
 
         try {
-            const res = await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/data.json`, {
+            const res = await fetch(`https://api.github.com/repos/${USERNAME}/${REPOSITORY}/contents/data.json`, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    message: "Update stok via web",
-                    content: btoa(JSON.stringify(newData, null, 2)),
-                    sha: sha
+                    message: "Update stok via Dashboard",
+                    content: btoa(JSON.stringify(dataBaru, null, 2)),
+                    sha: currentSha
                 })
             });
 
             if(res.ok) {
-                stat.innerText = "✅ BERHASIL! Me-refresh halaman...";
-                setTimeout(() => location.reload(), 2000);
+                stat.innerText = "✅ BERHASIL! Halaman akan dimuat ulang...";
+                setTimeout(() => location.reload(), 1500);
             } else {
                 stat.innerText = "❌ GAGAL! Token salah atau tidak punya akses.";
                 btn.disabled = false;
@@ -159,7 +194,7 @@
         }
     }
 
-    init();
+    loadData();
 </script>
 </body>
 </html>
