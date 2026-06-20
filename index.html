@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FASE SELLULAR PAKAM</title>
+    <title>FASE SELLULAR PAKAM - ADMIN</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            /* Ganti URL gambar di bawah ini untuk mengganti background */
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1614850523296-d8c1af93d400?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1614850523296-d8c1af93d400?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -20,12 +19,20 @@
         .glass {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 15px;
             transition: 0.3s;
         }
+        .glass:focus-within {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #FFD700;
+        }
         .font-header { font-family: 'Orbitron', sans-serif; }
         .gold-text { color: #FFD700; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        [contenteditable="true"]:focus {
+            outline: none;
+            border-bottom: 1px solid #FFD700;
+        }
     </style>
 </head>
 <body class="p-4">
@@ -38,24 +45,29 @@
             <h2 id="clock" class="text-2xl font-header font-bold tracking-widest">00:00:00</h2>
             <p id="date" class="text-[10px] uppercase tracking-tighter">MINGGU, 21 JUN 2026</p>
         </div>
-        <button class="border border-white px-3 py-1 text-[10px] rounded uppercase">Login</button>
+        <button onclick="saveData()" class="bg-yellow-600 hover:bg-yellow-500 border border-white px-3 py-1 text-[10px] rounded uppercase font-bold transition">Simpan Data</button>
     </header>
 
     <!-- Main Title -->
     <main class="max-w-md mx-auto text-center">
         <h1 class="text-4xl font-header font-bold gold-text italic mb-1">REKAP TOKO</h1>
         <h1 class="text-4xl font-header font-bold gold-text italic mb-4">PULSA & DATA</h1>
-        <p class="text-[10px] tracking-[0.3em] mb-10 font-light opacity-80 underline underline-offset-4">PENCATATAN STOK MODERN</p>
+        <p class="text-[10px] tracking-[0.3em] mb-6 font-light opacity-80 underline underline-offset-4">PENCATATAN STOK MODERN</p>
 
-        <!-- Stats Cards -->
-        <div id="content" class="space-y-4">
-            <!-- Data akan dimuat di sini oleh JavaScript -->
-            <div class="animate-pulse">Loading data...</div>
+        <!-- Stats Cards Container -->
+        <div id="content" class="space-y-4 mb-8">
+            <!-- Data akan dimuat di sini -->
+        </div>
+
+        <!-- Control Buttons -->
+        <div class="flex gap-2 justify-center mb-10">
+            <button onclick="addItem()" class="glass px-4 py-2 text-xs uppercase tracking-widest hover:bg-white/20">+ Tambah Baris</button>
+            <button onclick="resetData()" class="glass px-4 py-2 text-xs uppercase tracking-widest hover:bg-red-500/40 text-red-200">Reset</button>
         </div>
     </main>
 
     <script>
-        // Fungsi Jam & Tanggal Realtime
+        // --- LOGIKA JAM ---
         function updateTime() {
             const now = new Date();
             const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
@@ -65,26 +77,96 @@
         setInterval(updateTime, 1000);
         updateTime();
 
-        // Fungsi Ambil Data dari data.json
-        async function loadData() {
-            try {
-                // Tambahkan query string waktu agar browser tidak cache data lama
-                const response = await fetch('data.json?v=' + new Date().getTime());
-                const data = await response.json();
-                
-                const content = document.getElementById('content');
-                content.innerHTML = '';
+        // --- LOGIKA DATA ---
+        let storeData = [];
 
-                data.items.forEach(item => {
-                    content.innerHTML += `
-                        <div class="glass flex justify-between items-center p-6 shadow-2xl">
-                            <span class="font-bold tracking-[0.2em] text-sm uppercase">${item.label}</span>
-                            <span class="text-3xl font-header font-bold">${item.value}</span>
+        // 1. Load Data Pertama Kali
+        async function loadData() {
+            const localData = localStorage.getItem('fase_cellular_data');
+            
+            if (localData) {
+                // Jika ada data di browser, pakai itu
+                storeData = JSON.parse(localData);
+                renderData();
+            } else {
+                // Jika belum ada, coba ambil dari data.json
+                try {
+                    const response = await fetch('data.json');
+                    const data = await response.json();
+                    storeData = data.items;
+                    renderData();
+                } catch (error) {
+                    // Jika data.json tidak ada, buat data contoh
+                    storeData = [
+                        { label: "KLIK UNTUK EDIT NAMA", value: "0" }
+                    ];
+                    renderData();
+                }
+            }
+        }
+
+        // 2. Tampilkan Data ke HTML
+        function renderData() {
+            const content = document.getElementById('content');
+            content.innerHTML = '';
+
+            storeData.forEach((item, index) => {
+                content.innerHTML += `
+                    <div class="glass flex justify-between items-center p-6 shadow-2xl relative group">
+                        <div class="text-left">
+                            <span contenteditable="true" 
+                                  onblur="updateValue(${index}, 'label', this.innerText)"
+                                  class="font-bold tracking-[0.2em] text-sm uppercase block focus:text-yellow-400">${item.label}</span>
                         </div>
-                    `;
-                });
-            } catch (error) {
-                console.error("Gagal memuat data:", error);
+                        <div class="text-right flex items-center">
+                            <span contenteditable="true" 
+                                  onblur="updateValue(${index}, 'value', this.innerText)"
+                                  class="text-3xl font-header font-bold focus:text-yellow-400">${item.value}</span>
+                            <button onclick="removeItem(${index})" class="ml-4 opacity-0 group-hover:opacity-100 text-red-500 font-bold">✕</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // 3. Update Nilai di Array
+        function updateValue(index, key, newValue) {
+            storeData[index][key] = newValue;
+            saveToLocalStorage();
+        }
+
+        // 4. Tambah Baris Baru
+        function addItem() {
+            storeData.push({ label: "PRODUK BARU", value: "0" });
+            renderData();
+            saveToLocalStorage();
+        }
+
+        // 5. Hapus Baris
+        function removeItem(index) {
+            if(confirm('Hapus baris ini?')) {
+                storeData.splice(index, 1);
+                renderData();
+                saveToLocalStorage();
+            }
+        }
+
+        // 6. Simpan ke Browser
+        function saveToLocalStorage() {
+            localStorage.setItem('fase_cellular_data', JSON.stringify(storeData));
+        }
+
+        // Tombol Simpan Manual (hanya untuk feedback user)
+        function saveData() {
+            saveToLocalStorage();
+            alert("Data berhasil tersimpan di browser ini!");
+        }
+
+        // Reset ke Awal
+        function resetData() {
+            if(confirm('Reset semua data ke awal?')) {
+                localStorage.removeItem('fase_cellular_data');
+                location.reload();
             }
         }
 
