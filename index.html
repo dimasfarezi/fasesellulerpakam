@@ -3,94 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fase Selular Pakam - Toko</title>
+    <title>Fase Selular Pakam - Member Only</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Kanit:ital,wght@1,700&display=swap" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1542332213-9b5a5a3fab35?fit=crop&w=1000&q=80');
-            background-size: cover; background-attachment: fixed; background-position: center;
-            font-family: 'Orbitron', sans-serif; color: white; min-height: 100vh; margin: 0;
+            background: #484b3d;
+            font-family: 'Orbitron', sans-serif;
+            color: white; min-height: 100vh; margin: 0;
         }
-        .header-box { 
+        .header-box {
             background: #9fa18a; padding: 10px 20px; color: #1a1a1a; 
             font-family: 'Kanit', sans-serif; font-style: italic; font-weight: bold; font-size: 1.5rem;
         }
-        /* Kartu Utama - Bisa Diklik */
         .card-main {
-            background: rgba(13, 18, 1, 0.9); border: 1px solid #333; border-radius: 15px;
-            padding: 20px 30px; display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 12px; cursor: pointer; transition: 0.3s;
+            background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px; padding: 20px; display: flex; 
+            justify-content: space-between; align-items: center; margin-bottom: 10px;
+            cursor: pointer;
         }
-        .card-main:hover { background: rgba(30, 40, 10, 0.9); border-color: #facc15; }
-        
-        /* Kartu Produk Dijual */
         .product-card {
-            background: rgba(13, 18, 1, 0.95); border: 1px solid #4a5d23;
-            border-radius: 10px; overflow: hidden; width: 100%;
+            background: rgba(0, 0, 0, 0.5); border: 1px solid #4a5d23;
+            border-radius: 10px; overflow: hidden;
         }
-        .product-img { width: 100%; height: 130px; object-fit: cover; background: #222; }
+        /* Style untuk halaman login */
+        #login-screen {
+            position: fixed; inset: 0; background: #484b3d;
+            display: flex; flex-direction: column; align-items: center; 
+            justify-content: center; z-index: 1000; padding: 20px;
+        }
     </style>
 </head>
-<body class="p-4">
+<body>
 
-    <!-- Header & Jam -->
-    <div class="flex justify-between items-center mb-8">
-        <div class="text-[8px] border border-white/20 p-1 rounded">V.2.1</div>
-        <div class="text-center">
-            <h2 id="clock" class="text-2xl font-bold tracking-widest text-blue-100">00.00.00</h2>
-            <p id="date" class="text-[9px] opacity-60 uppercase">MINGGU, 21 JUN 2026</p>
+    <!-- ================= HALAMAN LOGIN ================= -->
+    <div id="login-screen">
+        <div class="text-center mb-8">
+            <div class="flex justify-center gap-1 mb-2">
+                <div class="header-box">FASE SELULAR</div>
+                <div class="header-box">PAKAM</div>
+            </div>
+            <p class="text-[10px] tracking-[3px] opacity-70">PRIVATE ACCESS ONLY</p>
         </div>
-        <button onclick="toggleAdmin()" class="border border-white/40 px-3 py-1 text-[9px] rounded uppercase">ADMIN</button>
-    </div>
-
-    <!-- Judul Header -->
-    <div class="text-center mb-10">
-        <div class="flex justify-center gap-1">
-            <div class="header-box">FASE SELULAR</div>
-            <div class="header-box">PAKAM</div>
-        </div>
-        <p class="text-[9px] tracking-[4px] mt-2 border-b border-white/30 inline-block pb-1">FASE SELLULAR PAKAM</p>
-    </div>
-
-    <!-- Bagian 1: Kategori Utama (Klik Salah Satu) -->
-    <div id="category-area" class="max-w-md mx-auto mb-10">
-        <p class="text-center text-[10px] opacity-50 mb-4 italic">Klik kategori untuk melihat yang dijual:</p>
-        <!-- Data summary akan muncul di sini -->
-    </div>
-
-    <!-- Bagian 2: Daftar Gambar Barang Dijual (Muncul saat diklik) -->
-    <div id="shop-section" class="max-w-4xl mx-auto hidden">
-        <div class="flex justify-between items-center border-b border-yellow-600/50 pb-2 mb-4">
-            <h3 id="shop-title" class="text-yellow-500 font-bold italic text-sm">PRODUK TERSEDIA</h3>
-            <button onclick="closeShop()" class="bg-black/80 text-[8px] px-2 py-1 rounded border border-white/20 text-red-400">CLOSE X</button>
-        </div>
-        <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 gap-3">
-            <!-- Gambar produk muncul di sini -->
+        <div class="w-full max-w-xs space-y-4">
+            <input type="text" id="user-input" placeholder="Username" class="w-full p-3 bg-black/30 border border-white/20 rounded outline-none text-center">
+            <input type="password" id="pass-input" placeholder="Password" class="w-full p-3 bg-black/30 border border-white/20 rounded outline-none text-center">
+            <button onclick="checkLogin()" class="w-full bg-yellow-600 p-3 rounded font-bold hover:bg-yellow-500">MASUK KE DASHBOARD</button>
+            <p id="login-error" class="text-red-400 text-[10px] text-center hidden">Username atau Password Salah!</p>
         </div>
     </div>
 
-    <!-- Panel Admin (Sama seperti sebelumnya) -->
-    <div id="admin-panel" class="fixed inset-0 bg-black/95 hidden z-50 p-6 overflow-y-auto">
+    <!-- ================= HALAMAN UTAMA (DASHBOARD) ================= -->
+    <div id="main-content" class="hidden p-4">
+        <!-- Navigasi Atas -->
+        <div class="flex justify-between items-center mb-8">
+            <div class="text-[8px] border border-white/20 p-1 rounded">V.3.0</div>
+            <div class="text-center">
+                <h2 id="clock" class="text-xl font-bold tracking-widest">00.00.00</h2>
+                <p id="date" class="text-[9px] opacity-60 uppercase">MINGGU, 21 JUN 2026</p>
+            </div>
+            <button onclick="logout()" class="text-[9px] text-red-400 border border-red-400/30 px-3 py-1 rounded">LOGOUT</button>
+        </div>
+
+        <div class="text-center mb-8">
+            <h1 class="text-yellow-500 italic font-bold">SELAMAT DATANG, ADMIN</h1>
+        </div>
+
+        <!-- Area Kartu Kategori -->
+        <div id="category-area" class="max-w-md mx-auto mb-10"></div>
+
+        <!-- Area Grid Produk -->
+        <div id="shop-section" class="max-w-4xl mx-auto hidden">
+            <div class="flex justify-between border-b border-yellow-600/30 pb-2 mb-4">
+                <h3 id="shop-title" class="text-yellow-500 font-bold text-sm italic">PRODUK</h3>
+                <button onclick="document.getElementById('shop-section').classList.add('hidden')" class="text-[8px] text-gray-400 uppercase">Tutup X</button>
+            </div>
+            <div id="product-grid" class="grid grid-cols-2 md:grid-cols-3 gap-3"></div>
+        </div>
+
+        <!-- Tombol Buka Panel Admin (Khusus Pemilik) -->
+        <div class="fixed bottom-6 right-6">
+            <button onclick="toggleAdmin()" class="bg-yellow-600 w-12 h-12 rounded-full shadow-lg flex items-center justify-center font-bold">SET</button>
+        </div>
+    </div>
+
+    <!-- ================= PANEL UPDATE DATA ================= -->
+    <div id="admin-panel" class="fixed inset-0 bg-black/95 hidden z-[2000] p-6 overflow-y-auto">
         <div class="max-w-sm mx-auto">
-            <h2 class="text-yellow-500 font-bold mb-6">UPDATE DATA TOKO</h2>
-            <input type="password" id="gh-token" placeholder="Token GitHub" class="w-full p-3 bg-gray-800 border border-gray-600 rounded mb-4 text-white">
-            <p class="text-[10px] opacity-50 mb-2 italic">Format data.json harus benar!</p>
-            <textarea id="json-editor" class="w-full h-64 p-3 bg-gray-900 border border-gray-700 rounded text-xs font-mono text-green-400 outline-none"></textarea>
-            <button onclick="saveData()" id="btn-save" class="w-full bg-yellow-600 p-3 rounded font-bold mt-4">SIMPAN JSON</button>
+            <h2 class="text-yellow-500 font-bold mb-6">PENGATURAN DATA</h2>
+            <input type="password" id="gh-token" placeholder="GitHub Personal Token" class="w-full p-3 bg-gray-800 border border-gray-600 rounded mb-4 text-sm">
+            <textarea id="json-editor" class="w-full h-80 p-3 bg-black border border-gray-700 rounded text-[10px] font-mono text-green-400"></textarea>
+            <button onclick="saveData()" id="btn-save" class="w-full bg-yellow-600 p-3 rounded font-bold mt-4">UPLOAD KE GITHUB</button>
             <button onclick="toggleAdmin()" class="w-full mt-4 text-xs opacity-50">KEMBALI</button>
+            <p id="status" class="text-center text-[10px] mt-4"></p>
         </div>
     </div>
 
 <script>
-    const USER = "USERNAME_GITHUB_ANDA"; // Ganti ini
-    const REPO = "NAMA_REPO_ANDA";      // Ganti ini
-    const FILE = "data.json";
-    
+    // 1. PENGATURAN LOGIN (Silakan ganti di sini)
+    const MY_USER = "admin";
+    const MY_PASS = "12345";
+
+    // 2. PENGATURAN GITHUB
+    const GH_USER = "USERNAME_GITHUB_ANDA"; 
+    const GH_REPO = "NAMA_REPO_ANDA";
+    const GH_FILE = "data.json";
+
     let fullData = {};
     let currentSha = "";
 
-    // Jam Realtime
+    // Fungsi Login
+    function checkLogin() {
+        const u = document.getElementById('user-input').value;
+        const p = document.getElementById('pass-input').value;
+        const err = document.getElementById('login-error');
+
+        if(u === MY_USER && p === MY_PASS) {
+            localStorage.setItem("isAuth", "true");
+            showDashboard();
+        } else {
+            err.classList.remove('hidden');
+        }
+    }
+
+    function showDashboard() {
+        document.getElementById('login-screen').classList.add('hidden');
+        document.getElementById('main-content').classList.remove('hidden');
+        initData();
+    }
+
+    function logout() {
+        localStorage.removeItem("isAuth");
+        location.reload();
+    }
+
+    // Cek status login saat halaman dibuka
+    if(localStorage.getItem("isAuth") === "true") {
+        showDashboard();
+    }
+
+    // Fungsi Jam
     setInterval(() => {
         const d = new Date();
         document.getElementById('clock').innerText = d.toLocaleTimeString('en-GB').replace(/:/g, '.');
@@ -98,114 +150,72 @@
     }, 1000);
 
     // Ambil Data
-    async function init() {
+    async function initData() {
         try {
-            const res = await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/${FILE}?v=` + Date.now());
+            const res = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${GH_FILE}?v=` + Date.now());
             const json = await res.json();
             currentSha = json.sha;
             fullData = JSON.parse(atob(json.content));
             
-            renderCategories();
-            document.getElementById('json-editor').value = JSON.stringify(fullData, null, 2);
-        } catch (e) { alert("Data gagal dimuat. Cek pengaturan Repo."); }
+            renderUI();
+        } catch (e) { console.error("Load Error"); }
     }
 
-    function renderCategories() {
+    function renderUI() {
         const area = document.getElementById('category-area');
         area.innerHTML = fullData.summary.map(item => `
             <div class="card-main" onclick="showProducts('${item.id}', '${item.label}')">
-                <span class="text-xs font-bold tracking-widest uppercase">${item.label}</span>
-                <span class="text-4xl font-bold">${item.value}</span>
+                <span class="text-[11px] font-bold tracking-widest uppercase">${item.label}</span>
+                <span class="text-3xl font-bold">${item.value}</span>
             </div>
         `).join('');
+        document.getElementById('json-editor').value = JSON.stringify(fullData, null, 2);
     }
 
-    function showProducts(categoryId, categoryName) {
+    function showProducts(id, name) {
         const shop = document.getElementById('shop-section');
         const grid = document.getElementById('product-grid');
-        const title = document.getElementById('shop-title');
-        
-        title.innerText = categoryName + " TERSEDIA";
+        document.getElementById('shop-title').innerText = name + " TERSEDIA";
         shop.classList.remove('hidden');
         
-        // Filter produk berdasarkan kategori yang diklik
-        const filtered = fullData.products.filter(p => p.categoryId === categoryId);
-        
-        if(filtered.length === 0) {
-            grid.innerHTML = "<p class='col-span-2 text-center text-xs opacity-50 py-10'>Belum ada barang di kategori ini.</p>";
-        } else {
-            grid.innerHTML = filtered.map(p => `
-                <div class="product-card">
-                    <img src="${p.image}" class="product-img" onerror="this.src='https://via.placeholder.com/200?text=Foto+Kambing'">
-                    <div class="p-2 bg-[#0d1201]">
-                        <p class="text-[10px] font-bold uppercase">${p.name}</p>
-                        <p class="text-[9px] text-yellow-500">${p.desc}</p>
-                    </div>
+        const filtered = fullData.products.filter(p => p.categoryId === id);
+        grid.innerHTML = filtered.length ? filtered.map(p => `
+            <div class="product-card">
+                <img src="${p.image}" class="w-full h-32 object-cover" onerror="this.src='https://via.placeholder.com/200?text=No+Image'">
+                <div class="p-2 text-[10px]">
+                    <p class="font-bold uppercase">${p.name}</p>
+                    <p class="text-yellow-500">${p.desc}</p>
                 </div>
-            `).join('');
-        }
-        // Scroll otomatis ke bagian toko
+            </div>
+        `).join('') : "<p class='col-span-2 text-center py-10 opacity-50'>Kosong.</p>";
+        
         shop.scrollIntoView({ behavior: 'smooth' });
     }
 
-    function closeShop() { document.getElementById('shop-section').classList.add('hidden'); }
     function toggleAdmin() { document.getElementById('admin-panel').classList.toggle('hidden'); }
 
     async function saveData() {
         const token = document.getElementById('gh-token').value;
-        const newJsonText = document.getElementById('json-editor').value;
-        if(!token) return alert("Token Wajib diisi!");
+        const content = document.getElementById('json-editor').value;
+        if(!token) return alert("Token GitHub Wajib!");
 
         const btn = document.getElementById('btn-save');
-        btn.disabled = true; btn.innerText = "Proses Simpan...";
+        btn.disabled = true; btn.innerText = "Uploading...";
 
         try {
-            const res = await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/${FILE}`, {
+            const res = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/${GH_FILE}`, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    message: "Update Stok & Produk",
-                    content: btoa(newJsonText),
+                    message: "Update via Web Admin",
+                    content: btoa(content),
                     sha: currentSha
                 })
             });
-            if(res.ok) { alert("Berhasil diupdate!"); location.reload(); }
-            else { alert("Gagal! Cek Token Anda."); btn.disabled = false; btn.innerText = "SIMPAN JSON"; }
-        } catch (e) { alert("Error koneksi."); btn.disabled = false; }
+            if(res.ok) { alert("Data Tersimpan!"); location.reload(); }
+            else { alert("Gagal Simpan!"); btn.disabled = false; }
+        } catch (e) { alert("Error"); btn.disabled = false; }
     }
-
-    init();
 </script>
 </body>
 </html>
-2. Update File data.json (Sangat Penting)
-Agar fitur klik ini berfungsi, format file data.json Anda harus diubah menjadi seperti ini. File ini sekarang menampung data angka (summary) dan data gambar barang (products).
-code
-JSON
-{
-  "summary": [
-    { "id": "indukan", "label": "INDUKAN", "value": "3" },
-    { "id": "pejantan", "label": "PEJANTAN", "value": "5" },
-    { "id": "cempe", "label": "CEMPE", "value": "4" }
-  ],
-  "products": [
-    {
-      "categoryId": "pejantan",
-      "name": "SUAKA",
-      "desc": "3 KG",
-      "image": "https://files.catbox.moe/2d4c91.htm"
-    },
-    {
-      "categoryId": "indukan",
-      "name": "SUKOI",
-      "desc": "50 KG",
-      "image": "https://files.catbox.moe/2d4c91.htm"
-    },
-    {
-      "categoryId": "cempe",
-      "name": "AYANG",
-      "desc": "78 KG",
-      "image": "https://images.unsplash.com/photo-1533318087102-b3ad366ed041?fit=crop&w=300&q=80"
-    }
-  ]
-}
