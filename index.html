@@ -3,150 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Putra Barokah Farm - Admin</title>
+    <title>Dashboard Fase Selular Pakam</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Kanit:ital,wght@1,700&display=swap" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1542332213-9b5a5a3fab35?fit=crop&w=1000&q=80');
-            background-size: cover; background-attachment: fixed;
-            font-family: 'Orbitron', sans-serif; color: white; min-height: 100vh;
+            /* Background Gelap dengan nuansa hijau/hutan agar elegan */
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://images.unsplash.com/photo-1542332213-9b5a5a3fab35?fit=crop&w=1000&q=80');
+            background-size: cover; background-attachment: fixed; background-position: center;
+            font-family: 'Orbitron', sans-serif; color: white; min-height: 100vh; margin: 0;
         }
-        .glass { background: rgba(13, 18, 1, 0.85); border: 1px solid #333; border-radius: 12px; }
-        .gold-text { color: #eab308; font-family: 'Kanit', sans-serif; font-style: italic; }
+        
+        /* Gaya Header Kotak Sesuai Gambar Anda */
+        .header-container { display: flex; justify-content: center; gap: 4px; margin-bottom: 5px; }
+        .header-box { 
+            background: rgba(255, 255, 255, 0.2); 
+            padding: 10px 20px; 
+            font-family: 'Kanit', sans-serif; font-style: italic; font-size: 1.5rem;
+            color: #1a1a1a; text-transform: uppercase; font-weight: bold;
+        }
+        .subtitle { 
+            font-size: 9px; letter-spacing: 4px; opacity: 0.8; 
+            border-bottom: 1px solid white; display: inline-block; padding-bottom: 4px;
+        }
+
+        /* Gaya Kartu Data */
+        .card {
+            background: rgba(13, 18, 1, 0.9);
+            border: 1px solid #333; border-radius: 12px;
+            padding: 20px; display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+        .card-label { font-size: 11px; opacity: 0.6; letter-spacing: 2px; }
+        .card-value { font-size: 2rem; font-weight: bold; color: #fff; }
+
+        /* Panel Admin */
+        #admin-panel {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 100;
+            display: none; padding: 30px; overflow-y: auto;
+        }
     </style>
 </head>
 <body class="p-4">
 
-    <!-- Header -->
-    <header class="flex justify-between items-center mb-10">
-        <div class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center border border-white/20">Logo</div>
+    <!-- Navigasi Atas -->
+    <div class="flex justify-between items-start mb-8">
+        <div class="w-10 h-10 border border-white/20 rounded flex items-center justify-center text-[8px]">LOGO</div>
         <div class="text-center">
-            <h2 id="clock" class="text-2xl font-bold tracking-widest text-blue-100">00:00:00</h2>
-            <p id="date" class="text-[10px] opacity-60 uppercase">MINGGU, 21 JUN 2026</p>
+            <h2 id="clock" class="text-2xl font-bold tracking-widest text-blue-100">00.00.00</h2>
+            <p id="date" class="text-[9px] opacity-60 uppercase">MINGGU, 21 JUN 2026</p>
         </div>
-        <button onclick="toggleAdmin()" class="border border-white/40 px-3 py-1 text-[10px] rounded uppercase hover:bg-white/20">LOGIN</button>
-    </header>
-
-    <!-- Judul Utama -->
-    <div class="text-center mb-8">
-        <h1 class="text-4xl gold-text leading-tight">PUTRA BAROKAH</h1>
-        <h1 class="text-4xl gold-text mb-2">FARM</h1>
-        <p class="text-[9px] tracking-[0.4em] opacity-70 border-t border-white/20 pt-2 inline-block">GENERASI PETERNAK MODERN</p>
+        <button onclick="toggleAdmin()" class="border border-white/40 px-3 py-1 text-[9px] rounded hover:bg-white/10">LOGIN</button>
     </div>
 
-    <!-- Tampilan Publik (Display Only) -->
-    <div id="public-view" class="max-w-md mx-auto space-y-3">
-        <div class="text-center italic opacity-50">Memuat data...</div>
+    <!-- Header Sesuai Gambar Anda -->
+    <div class="text-center mb-10">
+        <div class="header-container">
+            <div class="header-box">FASE SELULAR</div>
+            <div class="header-box">PAKAM</div>
+        </div>
+        <p class="subtitle uppercase">FASE SELLULAR PAKAM</p>
     </div>
 
-    <!-- Form Admin (Tersembunyi) -->
-    <div id="admin-panel" class="hidden fixed inset-0 bg-black/90 z-50 p-6 overflow-y-auto">
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="text-xl gold-text">UPDATE STOK</h2>
-            <button onclick="toggleAdmin()" class="text-red-500">TUTUP [X]</button>
-        </div>
-        
-        <div class="space-y-4 max-w-sm mx-auto">
-            <input type="password" id="gh-token" placeholder="Masukkan Token GitHub Anda" class="w-full p-3 bg-gray-800 rounded border border-gray-600 outline-none">
-            <div id="edit-fields" class="space-y-4">
-                <!-- Input field akan muncul di sini -->
+    <!-- Container Utama Data -->
+    <div id="data-container" class="max-w-md mx-auto">
+        <p class="text-center italic opacity-50">Menghubungkan ke database...</p>
+    </div>
+
+    <!-- Panel Update (Hanya Anda) -->
+    <div id="admin-panel">
+        <div class="max-w-sm mx-auto">
+            <div class="flex justify-between mb-8">
+                <h3 class="text-yellow-500 font-bold">MODE UPDATE ADMIN</h3>
+                <button onclick="toggleAdmin()" class="text-red-500 text-sm">BATAL [X]</button>
             </div>
-            <button onclick="saveData()" id="btn-save" class="w-full bg-yellow-600 p-3 rounded font-bold hover:bg-yellow-500">SIMPAN PERUBAHAN</button>
-            <p id="status" class="text-center text-xs mt-2 text-yellow-400"></p>
+            <input type="password" id="gh-token" placeholder="Masukkan Token GitHub" class="w-full p-3 bg-gray-800 border border-gray-600 rounded mb-6 outline-none">
+            <div id="edit-list" class="space-y-4 mb-6"></div>
+            <button onclick="saveChanges()" id="btn-save" class="w-full bg-yellow-600 p-4 rounded font-bold">SIMPAN DATA TERBARU</button>
+            <p id="status-msg" class="text-center text-xs mt-4"></p>
         </div>
     </div>
 
 <script>
-    // Konfigurasi Repo Anda
-    const GITHUB_USER = "USERNAME_ANDA"; // <--- Ganti dengan Username GitHub Anda
-    const GITHUB_REPO = "NAMA_REPO_ANDA"; // <--- Ganti dengan Nama Repository Anda
-    const FILE_PATH = "data.json";
+    // ISI DATA BERIKUT SESUAI GITHUB ANDA
+    const USER = "USERNAME_ANDA"; // Ganti dengan Username GitHub
+    const REPO = "NAMA_REPO_ANDA"; // Ganti dengan Nama Repository
+    const FILE = "data.json";
 
-    let currentData = [];
-    let fileSha = "";
+    let rawData = [];
+    let currentSha = "";
 
     // Jam Realtime
     setInterval(() => {
-        const now = new Date();
-        document.getElementById('clock').innerText = now.toLocaleTimeString('en-GB').replace(/:/g, '.');
-        document.getElementById('date').innerText = now.toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'short', year:'numeric'}).toUpperCase();
+        const d = new Date();
+        document.getElementById('clock').innerText = d.toLocaleTimeString('en-GB').replace(/:/g, '.');
+        document.getElementById('date').innerText = d.toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'short', year:'numeric'}).toUpperCase();
     }, 1000);
 
-    // Ambil Data
+    // Ambil Data dari GitHub
     async function loadData() {
         try {
-            const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${FILE_PATH}`);
-            const json = await res.json();
-            fileSha = json.sha; // Simpan SHA untuk update nanti
-            currentData = JSON.parse(atob(json.content));
+            const r = await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/${FILE}`);
+            const j = await r.json();
+            currentSha = j.sha;
+            rawData = JSON.parse(atob(j.content));
             
-            renderPublicView();
-            renderAdminFields();
-        } catch (e) { alert("Gagal ambil data. Cek settingan Repo!"); }
-    }
+            // Tampilkan ke Publik
+            const container = document.getElementById('data-container');
+            container.innerHTML = rawData.map(item => `
+                <div class="card">
+                    <div class="card-label uppercase">${item.label}</div>
+                    <div class="card-value">${item.value}</div>
+                </div>
+            `).join('');
 
-    function renderPublicView() {
-        const container = document.getElementById('public-view');
-        container.innerHTML = currentData.map(item => `
-            <div class="glass flex justify-between items-center p-6 shadow-xl">
-                <span class="text-sm font-bold tracking-widest uppercase">${item.label}</span>
-                <span class="text-4xl font-bold">${item.value}</span>
-            </div>
-        `).join('');
-    }
+            // Siapkan Form Admin
+            document.getElementById('edit-list').innerHTML = rawData.map((item, i) => `
+                <div>
+                    <label class="text-[10px] opacity-50 uppercase">${item.label}</label>
+                    <input type="text" id="inp-${i}" value="${item.value}" class="w-full p-3 bg-gray-700 border border-gray-600 rounded">
+                </div>
+            `).join('');
 
-    function renderAdminFields() {
-        const container = document.getElementById('edit-fields');
-        container.innerHTML = currentData.map((item, index) => `
-            <div>
-                <label class="text-[10px] opacity-50 uppercase">${item.label}</label>
-                <input type="text" id="input-${index}" value="${item.value}" class="w-full p-3 bg-gray-700 rounded outline-none border border-gray-600">
-            </div>
-        `).join('');
+        } catch (e) { alert("Gagal memuat data! Cek koneksi & nama Repo."); }
     }
 
     function toggleAdmin() {
-        document.getElementById('admin-panel').classList.toggle('hidden');
+        const panel = document.getElementById('admin-panel');
+        panel.style.display = (panel.style.display === 'block') ? 'none' : 'block';
     }
 
-    async function saveData() {
+    async function saveChanges() {
         const token = document.getElementById('gh-token').value;
+        if(!token) return alert("Token GitHub wajib diisi!");
+
         const btn = document.getElementById('btn-save');
-        const status = document.getElementById('status');
-        
-        if (!token) return alert("Token wajib diisi!");
+        const msg = document.getElementById('status-msg');
+        btn.disabled = true; msg.innerText = "Mengirim data ke GitHub...";
 
-        btn.disabled = true;
-        status.innerText = "Sedang menyimpan...";
-
-        // Ambil data baru dari input
-        const newData = currentData.map((item, index) => ({
+        const updatedData = rawData.map((item, i) => ({
             label: item.label,
-            value: document.getElementById(`input-${index}`).value
+            value: document.getElementById(`inp-${i}`).value
         }));
 
         try {
-            const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${FILE_PATH}`, {
+            const res = await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/${FILE}`, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    message: "Update data via Admin Web",
-                    content: btoa(JSON.stringify(newData, null, 2)),
-                    sha: fileSha
+                    message: "Update Stok via Web",
+                    content: btoa(JSON.stringify(updatedData, null, 2)),
+                    sha: currentSha
                 })
             });
 
-            if (res.ok) {
-                status.innerText = "✅ BERHASIL DIUPDATE!";
-                setTimeout(() => location.reload(), 1500);
+            if(res.ok) {
+                msg.className = "text-center text-green-500 mt-4";
+                msg.innerText = "BERHASIL DIUPDATE! Tunggu 1 menit lalu refresh.";
+                setTimeout(() => location.reload(), 2000);
             } else {
-                status.innerText = "❌ GAGAL! Cek Token Anda.";
+                throw new Error();
             }
         } catch (e) {
-            status.innerText = "Terjadi kesalahan koneksi.";
-        } finally {
             btn.disabled = false;
+            msg.className = "text-center text-red-500 mt-4";
+            msg.innerText = "GAGAL! Pastikan Token benar & punya akses repo.";
         }
     }
 
