@@ -3,200 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FASE SELULAR PAKAM V5</title>
+    <title>Dashboard Fase Selular Pakam</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font untuk gaya Digital dan Modern -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Kanit:ital,wght@1,700&display=swap" rel="stylesheet">
     <style>
-        /* TAMPILAN LOGIN (GAMBAR 1 - MENDATAR) */
-        #hal-login {
-            background-color: #484b3d;
-            height: 100vh; width: 100%; position: fixed; inset: 0; z-index: 999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        body {
+            /* Latar belakang abu-abu sesuai gambar */
+            background-color: #b0b0b0; 
+            font-family: 'Orbitron', sans-serif;
+            color: #333;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
         }
-        .kotak-abu {
-            background: #9fa18a; padding: 12px 25px; color: #1a1a1a;
-            font-family: 'Kanit', sans-serif; font-style: italic; font-weight: 800; font-size: 1.8rem;
+        /* Style Header */
+        .btn-header {
+            background-color: #7a7a7a;
+            color: #1a1a1a;
+            padding: 5px 15px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
         }
-        .inp-dark {
-            background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.2);
-            color: white; padding: 12px; width: 220px; outline: none; border-radius: 4px; text-align: center;
+        /* Judul Utama Kuning */
+        .judul-emas {
+            color: #facc15;
+            font-family: 'Kanit', sans-serif;
+            font-style: italic;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            line-height: 1;
         }
-        .btn-kuning {
-            background: #c28a00; color: white; padding: 12px 25px;
-            font-weight: bold; border-radius: 4px; text-transform: uppercase;
+        /* Kartu Hitam */
+        .kartu-stok {
+            background-color: #0c0c0c;
+            color: white;
+            border-radius: 15px;
+            padding: 25px 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 600px;
+            margin: 15px auto;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
-
-        /* TAMPILAN DASHBOARD (GAMBAR 2 - BAMBU) */
-        #hal-dashboard {
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1542332213-9b5a5a3fab35?fit=crop&w=1200&q=80');
-            background-size: cover; background-position: center; background-attachment: fixed;
-            min-height: 100vh; display: none; padding: 20px; font-family: 'Orbitron', sans-serif;
+        .label-stok {
+            font-size: 14px;
+            letter-spacing: 2px;
+            font-weight: bold;
         }
-        .teks-emas {
-            color: #facc15; font-family: 'Kanit', sans-serif; font-style: italic;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.8); line-height: 1.1; font-weight: bold;
+        .angka-stok {
+            font-size: 2.5rem;
+            font-weight: 700;
         }
-        .kotak-stok {
-            background: rgba(0, 0, 0, 0.85); border-radius: 12px; padding: 22px;
-            display: flex; justify-content: space-between; align-items: center;
-            max-width: 500px; margin: 15px auto; border-bottom: 4px solid #111;
-        }
-
-        /* PANEL ADMIN */
-        #panel-admin {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.98);
-            display: none; z-index: 1000; padding: 20px; overflow-y: auto;
+        /* Panel Admin */
+        #admin-panel {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.95);
+            display: none; z-index: 100; padding: 20px; overflow-y: auto; color: white;
         }
     </style>
 </head>
 <body>
 
-    <!-- HALAMAN LOGIN (MENDATAR) -->
-    <div id="hal-login">
-        <div class="flex gap-1 mb-2">
-            <div class="kotak-abu">FASE SELULAR</div>
-            <div class="kotak-abu">PAKAM</div>
+    <!-- Navigasi Atas -->
+    <div class="flex justify-between items-start mb-10">
+        <button class="btn-header">LOGO</button>
+        <div class="text-center">
+            <h2 id="clock" class="text-2xl font-bold tracking-widest text-blue-900">00.00.00</h2>
+            <p id="date" class="text-[9px] opacity-60 uppercase">MINGGU, 21 JUN 2026</p>
         </div>
-        <p class="text-[10px] text-white/50 tracking-[4px] mb-12 uppercase">Private Access Only</p>
-        
-        <div class="flex flex-col md:flex-row gap-1 items-center">
-            <input type="text" id="user-in" placeholder="Username" class="inp-dark">
-            <input type="password" id="pass-in" placeholder="Password" class="inp-dark">
-            <button onclick="gasLogin()" class="btn-kuning">MASUK KE DASHBOARD</button>
-        </div>
-        <p id="pesan-salah" class="text-red-500 text-[10px] mt-4 hidden">Gagal! Cek User & Password.</p>
+        <!-- Klik Login untuk muncul Prompt ID -->
+        <button onclick="bukaAksesAdmin()" class="btn-header">LOGIN</button>
     </div>
 
-    <!-- HALAMAN DASHBOARD (BAMBU) -->
-    <div id="hal-dashboard">
-        <div class="flex justify-between items-center mb-10">
-            <div class="w-10 h-10 border border-white/20 bg-black/40 flex items-center justify-center text-[8px] rounded uppercase">Logo</div>
-            <div class="text-center">
-                <h2 id="jam" class="text-2xl font-bold tracking-widest text-blue-100">00.00.00</h2>
-                <p id="tgl" class="text-[9px] opacity-60">MINGGU, 21 JUN 2026</p>
-            </div>
-            <!-- LOGIN INI AKAN MUNCULKAN PROMPT ID (GAMBAR 3) -->
-            <button onclick="mintaIdPrompt()" class="border border-white/40 px-3 py-1 text-[9px] rounded uppercase bg-black/40">LOGIN</button>
-        </div>
-
-        <div class="text-center mb-16">
-            <h1 class="text-6xl teks-emas uppercase">FASE SELULAR</h1>
-            <h1 class="text-6xl teks-emas mb-4 uppercase">PAKAM</h1>
-            <p class="text-[10px] tracking-[0.4em] text-white/70 uppercase">Generasi Peternak Modern</p>
-        </div>
-
-        <div id="list-stok-toko"></div>
+    <!-- Judul Tengah -->
+    <div class="text-center mb-12">
+        <h1 class="text-5xl judul-emas uppercase italic">FASE SELULAR</h1>
+        <h1 class="text-5xl judul-emas uppercase italic mb-4">PAKAM</h1>
+        <p class="text-[10px] tracking-[0.4em] opacity-60 uppercase font-bold">Generasi Peternak Modern</p>
     </div>
 
-    <!-- HALAMAN PANEL ADMIN -->
-    <div id="panel-admin">
+    <!-- Area Kartu Data -->
+    <div id="data-display" class="space-y-4">
+        <p class="text-center italic opacity-40">Memuat data...</p>
+    </div>
+
+    <!-- Panel Update Data (Hanya Muncul Jika ID Benar) -->
+    <div id="admin-panel">
         <div class="max-w-sm mx-auto pt-10">
-            <h2 class="text-yellow-500 font-bold text-center mb-6 uppercase tracking-widest">Update Data Stok</h2>
+            <h2 class="text-yellow-500 font-bold text-center mb-6 uppercase tracking-widest">Update Stok</h2>
             <div class="space-y-2 mb-6">
-                <input type="text" id="git-u" placeholder="Username GitHub" class="w-full p-3 bg-gray-800 rounded text-sm text-white outline-none">
-                <input type="text" id="git-r" placeholder="Nama Repo" class="w-full p-3 bg-gray-800 rounded text-sm text-white outline-none">
-                <input type="password" id="git-t" placeholder="Token GitHub" class="w-full p-3 bg-gray-800 rounded text-sm text-white outline-none">
+                <input type="text" id="gh-u" placeholder="Username GitHub" class="w-full p-3 bg-gray-800 rounded text-sm text-white outline-none">
+                <input type="text" id="gh-r" placeholder="Repo GitHub" class="w-full p-3 bg-gray-800 rounded text-sm text-white outline-none">
+                <input type="password" id="gh-t" placeholder="Token GitHub" class="w-full p-3 bg-gray-800 rounded text-sm text-white outline-none">
             </div>
-            <div id="form-stok" class="space-y-4 mb-6 border-t border-white/10 pt-4 text-white"></div>
-            <button onclick="updateDataKeGithub()" id="btn-save" class="w-full bg-yellow-600 p-3 rounded font-bold uppercase text-white">Simpan Data</button>
-            <button onclick="document.getElementById('panel-admin').style.display='none'" class="w-full mt-4 text-[10px] opacity-40 text-white">KEMBALI</button>
+            <div id="form-edit" class="space-y-4 mb-6 border-t border-white/10 pt-4"></div>
+            <button onclick="simpanKeGithub()" id="btn-save" class="w-full bg-yellow-600 p-3 rounded font-bold uppercase text-white">Simpan Perubahan</button>
+            <button onclick="tutupAdmin()" class="w-full mt-4 text-[10px] opacity-40 text-white">BATAL</button>
+            <p id="status" class="text-center text-xs mt-4"></p>
         </div>
     </div>
 
 <script>
-    // --- SETTING LOGIN ---
-    const U_WEB = "admin";
-    const P_WEB = "12345";
-    const ID_PROMPT = "pakam01"; // ID untuk prompt di dashboard
-    // ---------------------
+    // --- KONFIGURASI ---
+    const ID_RAHASIA = "admin123"; // Ganti ID ini untuk buka menu edit
+    // -------------------
 
-    let dataItems = [];
+    let stokLocal = [];
 
-    // Login Awal Mendatar
-    function gasLogin() {
-        const u = document.getElementById('user-in').value;
-        const p = document.getElementById('pass-in').value;
-        if(u === U_WEB && p === P_WEB) {
-            document.getElementById('hal-login').style.display = 'none';
-            document.getElementById('hal-dashboard').style.display = 'block';
-            ambilDataJson();
-        } else {
-            document.getElementById('pesan-salah').classList.remove('hidden');
+    // Prompt ID saat klik tombol Login
+    function bukaAksesAdmin() {
+        let input = prompt("ID:");
+        if(input === ID_RAHASIA) {
+            document.getElementById('admin-panel').style.display = 'block';
+        } else if(input !== null) {
+            alert("Akses Ditolak!");
         }
     }
 
-    // Prompt ID (Sesuai Gambar 3)
-    function mintaIdPrompt() {
-        let ask = prompt("ID:");
-        if(ask === ID_PROMPT) {
-            document.getElementById('panel-admin').style.display = 'block';
-        } else if(ask !== null) {
-            alert("ID Salah!");
-        }
+    function tutupAdmin() {
+        document.getElementById('admin-panel').style.display = 'none';
     }
 
-    // Jam Realtime
+    // Jam Digital
     setInterval(() => {
-        const d = new Date();
-        document.getElementById('jam').innerText = d.toLocaleTimeString('en-GB').replace(/:/g, '.');
-        document.getElementById('tgl').innerText = d.toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'short', year:'numeric'}).toUpperCase();
+        const now = new Date();
+        document.getElementById('clock').innerText = now.toLocaleTimeString('en-GB').replace(/:/g, '.');
+        document.getElementById('date').innerText = now.toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'short', year:'numeric'}).toUpperCase();
     }, 1000);
 
-    // Ambil Data
-    async function ambilDataJson() {
+    // Ambil Data dari data.json
+    async function loadData() {
         try {
-            const r = await fetch('data.json?cache=' + Date.now());
-            dataItems = await r.json();
+            const res = await fetch('data.json?v=' + Date.now());
+            stokLocal = await res.json();
             
-            document.getElementById('list-stok-toko').innerHTML = dataItems.map(i => `
-                <div class="kotak-stok shadow-2xl">
-                    <span class="text-sm font-bold tracking-widest uppercase text-white">${i.nama}</span>
-                    <span class="text-4xl font-bold text-white">${i.nilai}</span>
+            document.getElementById('data-display').innerHTML = stokLocal.map(item => `
+                <div class="kartu-stok">
+                    <span class="label-stok uppercase">${item.nama}</span>
+                    <span class="angka-stok">${item.nilai}</span>
                 </div>
             `).join('');
 
-            document.getElementById('form-stok').innerHTML = dataItems.map((i, idx) => `
+            document.getElementById('form-edit').innerHTML = stokLocal.map((item, i) => `
                 <div>
-                    <label class="text-[9px] opacity-40 mb-1 block">${i.nama}</label>
-                    <input type="text" id="val-${idx}" value="${i.nilai}" class="w-full p-2 bg-gray-700 border border-gray-600 rounded text-sm">
+                    <label class="text-[9px] opacity-40 uppercase mb-1 block">${item.nama}</label>
+                    <input type="text" id="val-${i}" value="${item.nilai}" class="w-full p-2 bg-gray-700 border border-gray-600 rounded text-sm text-white">
                 </div>
             `).join('');
-        } catch (e) { console.log("Gagal muat JSON"); }
+        } catch (e) { 
+            document.getElementById('data-display').innerHTML = "<p class='text-center text-red-600'>Gagal muat data.json</p>";
+        }
     }
 
-    // Simpan
-    async function updateDataKeGithub() {
-        const u = document.getElementById('git-u').value;
-        const r = document.getElementById('git-r').value;
-        const t = document.getElementById('git-t').value;
-        if(!u || !r || !t) return alert("Lengkapi data!");
+    // Fungsi Simpan ke GitHub
+    async function simpanKeGithub() {
+        const u = document.getElementById('gh-u').value;
+        const r = document.getElementById('gh-r').value;
+        const t = document.getElementById('gh-t').value;
+        if(!u || !r || !t) return alert("Lengkapi data GitHub!");
 
         const btn = document.getElementById('btn-save');
-        btn.disabled = true; btn.innerText = "Saving...";
+        btn.disabled = true; btn.innerText = "Proses...";
 
         try {
-            const g = await fetch(`https://api.github.com/repos/${u}/${r}/contents/data.json`);
-            const f = await g.json();
+            const get = await fetch(`https://api.github.com/repos/${u}/${r}/contents/data.json`);
+            const file = await get.json();
 
-            const baru = dataItems.map((item, idx) => ({
+            const baru = stokLocal.map((item, i) => ({
                 nama: item.nama,
-                nilai: document.getElementById('val-' + idx).value
+                nilai: document.getElementById('val-' + i).value
             }));
 
             const res = await fetch(`https://api.github.com/repos/${u}/${r}/contents/data.json`, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${t}`, 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    message: "update",
+                    message: "update data",
                     content: btoa(JSON.stringify(baru, null, 2)),
-                    sha: f.sha
+                    sha: file.sha
                 })
             });
 
-            if(res.ok) { alert("Selesai!"); location.reload(); }
-            else { alert("Gagal!"); btn.disabled = false; }
-        } catch (e) { alert("Error"); btn.disabled = false; }
+            if(res.ok) { alert("Berhasil Terupdate!"); location.reload(); }
+            else { alert("Gagal Simpan!"); btn.disabled = false; }
+        } catch (e) { alert("Error Koneksi"); btn.disabled = false; }
     }
+
+    loadData();
 </script>
 </body>
 </html>
