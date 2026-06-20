@@ -1,20 +1,6 @@
-{
-  "items": [
-    {
-      "label": "STOK PULSA (K)",
-      "value": "2.500"
-    },
-    {
-      "label": "PAKET DATA",
-      "value": "45"
-    },
-    {
-      "label": "SALDO TOKO",
-      "value": "1.250"
-    },
-    {
-      "label": "TERJUAL HARI INI",
-      "value": "12"
-    }
-  ]
-}
+[
+  { "nama": "STOK PULSA (K)", "nilai": "2.500" },
+  { "nama": "PAKET DATA", "nilai": "45" },
+  { "nama": "SALDO TOKO", "nilai": "1.250" },
+  { "nama": "TERJUAL HARI INI", "nilai": "12" }
+]
