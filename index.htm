@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Fase Selular Pakam - Media</title>
+    <title>Dashboard Fase Selular Pakam</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Kanit:ital,wght@1,700&display=swap" rel="stylesheet">
     <style>
@@ -16,37 +16,47 @@
         .kartu-utama { background: rgba(13, 18, 1, 0.9); border-radius: 15px; padding: 25px; display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: 12px auto; cursor: pointer; transition: 0.3s; border-bottom: 4px solid #111; }
         .kotak-item { background: rgba(13, 18, 1, 0.95); border-radius: 12px; overflow: hidden; border: 1px solid #4a5d23; cursor: pointer; }
         
-        /* TAMPILAN DETAIL MEDIA (SESUAI GAMBAR KAKAK) */
-        #media-player {
-            position: fixed; inset: 0; background: #0d0e05; display: none; 
-            flex-direction: column; z-index: 2000;
-        }
-        .media-content { width: 100%; height: 75vh; object-fit: contain; background: black; }
+        /* Layout Media Player */
+        #media-player { position: fixed; inset: 0; background: #000; display: none; flex-direction: column; z-index: 2000; }
+        .media-content { width: 100%; height: 70vh; object-fit: contain; background: black; }
         .media-footer { background: #0d1201; flex-grow: 1; padding: 30px; border-top: 2px solid #facc15; }
 
         #admin-panel { position: fixed; inset: 0; background: rgba(0,0,0,0.98); display: none; z-index: 3000; padding: 20px; overflow-y: auto; }
+        
+        /* Logo Pojok Kiri Atas */
+        .logo-header { height: 60px; width: auto; object-fit: contain; filter: drop-shadow(0 0 5px rgba(0,0,0,0.5)); }
     </style>
 </head>
 <body>
 
-    <!-- Navigasi -->
-    <div class="flex justify-between items-center mb-8">
-        <div class="text-[8px] border border-white/20 p-1 rounded uppercase">V.11.0</div>
-        <div class="text-center">
-            <h2 id="jam" class="text-2xl font-bold tracking-widest text-blue-100">00.00.00</h2>
-            <p id="tgl" class="text-[9px] opacity-60">MINGGU, 21 JUN 2026</p>
+    <!-- Navigasi Header -->
+    <div class="flex justify-between items-center mb-12">
+        <!-- LOGO POJOK KIRI ATAS -->
+        <div class="flex-1">
+            <img src="logo.png" alt="FS Logo" class="logo-header" onerror="this.style.display='none'">
         </div>
-        <button onclick="bukaLoginAdmin()" class="border border-white/40 px-3 py-1 text-[9px] rounded uppercase bg-black/40">ADMIN</button>
+        
+        <!-- JAM DI TENGAH -->
+        <div class="text-center flex-1">
+            <h2 id="jam" class="text-2xl font-bold tracking-widest text-blue-100">00.00.00</h2>
+            <p id="tgl" class="text-[9px] opacity-60 uppercase tracking-widest">MINGGU, 21 JUN 2026</p>
+        </div>
+
+        <!-- TOMBOL LOGIN DI KANAN -->
+        <div class="flex-1 text-right">
+            <button onclick="bukaLoginAdmin()" class="border border-white/40 px-3 py-1 text-[9px] rounded uppercase bg-black/40 hover:bg-white/10 transition">LOGIN</button>
+        </div>
     </div>
 
-    <!-- Judul -->
-    <div class="text-center mb-12">
+    <!-- Judul Tengah -->
+    <div class="text-center mb-16">
         <h1 class="text-6xl judul-emas uppercase italic">FASE SELULAR</h1>
         <h1 class="text-6xl judul-emas mb-4 uppercase italic">PAKAM</h1>
+        <p class="text-[10px] tracking-[0.4em] text-white/70 uppercase">Pencatatan Stok Modern</p>
     </div>
 
     <!-- Area Kategori -->
-    <div id="container-stok"></div>
+    <div id="container-stok" class="mb-20"></div>
 
     <!-- Area Galeri -->
     <div id="area-galeri" class="max-w-5xl mx-auto mt-10 hidden">
@@ -57,11 +67,9 @@
         <div id="grid-item" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
     </div>
 
-    <!-- ================= HALAMAN MEDIA PLAYER (GAMBAR KAKAK) ================= -->
+    <!-- Media Player View -->
     <div id="media-player">
-        <div id="media-wrap" class="w-full h-[75vh]">
-            <!-- Foto atau Video masuk sini -->
-        </div>
+        <div id="media-wrap" class="w-full h-[70vh]"></div>
         <div class="media-footer">
             <div class="flex justify-between items-center mb-10">
                 <h2 id="media-nama" class="text-4xl font-bold italic uppercase tracking-wider">NAMA</h2>
@@ -71,13 +79,13 @@
         </div>
     </div>
 
-    <!-- Admin Panel -->
+    <!-- Panel Admin -->
     <div id="admin-panel">
         <div class="max-w-md mx-auto">
             <h2 class="text-yellow-500 font-bold text-center mb-6 uppercase">Database Editor</h2>
             <textarea id="json-editor" class="w-full h-96 p-3 bg-black border border-gray-700 rounded text-[10px] font-mono text-green-400 outline-none"></textarea>
             <button onclick="simpanKeGitHub()" class="w-full bg-yellow-600 p-4 rounded font-bold uppercase mt-6">Update Data</button>
-            <button onclick="tutupAdmin()" class="w-full mt-4 text-xs opacity-50">Batal</button>
+            <button onclick="tutupAdmin()" class="w-full mt-4 text-xs opacity-50 text-center block">Batal</button>
         </div>
     </div>
 
@@ -105,9 +113,9 @@
 
     function renderKartu() {
         document.getElementById('container-stok').innerHTML = database.kategori.map(cat => `
-            <div class="kartu-utama" onclick="tampilkanGaleri('${cat.id}', '${cat.nama}')">
-                <span class="text-sm font-bold tracking-widest uppercase">${cat.nama}</span>
-                <span class="text-4xl font-bold">${cat.nilai}</span>
+            <div class="kartu-utama shadow-2xl" onclick="tampilkanGaleri('${cat.id}', '${cat.nama}')">
+                <span class="text-sm font-bold tracking-widest uppercase text-white/90">${cat.nama}</span>
+                <span class="text-4xl font-bold text-white">${cat.nilai}</span>
             </div>
         `).join('');
     }
@@ -118,7 +126,7 @@
         const items = database.barang.filter(b => b.kategoriId === idCat);
         
         grid.innerHTML = items.map(b => `
-            <div class="kotak-item" onclick="bukaMediaPlayer('${b.foto}', '${b.nama}', '${b.info}', '${b.type}')">
+            <div class="kotak-item shadow-lg" onclick="bukaMediaPlayer('${b.foto}', '${b.nama}', '${b.info}', '${b.type}')">
                 <img src="${b.foto}" class="w-full h-32 object-cover bg-gray-800" onerror="this.src='https://via.placeholder.com/300?text=Media'">
                 <div class="p-2 bg-[#0d1201] text-[10px] flex justify-between">
                     <span class="font-bold uppercase">${b.nama}</span>
@@ -127,27 +135,23 @@
             </div>
         `).join('');
         document.getElementById('area-galeri').style.display = 'block';
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        document.getElementById('area-galeri').scrollIntoView({ behavior: 'smooth' });
     }
 
-    // FUNGSI UTAMA: BUKA FOTO ATAU VIDEO (AUTOPLAY)
     function bukaMediaPlayer(url, nama, info, type) {
         const wrap = document.getElementById('media-wrap');
         document.getElementById('media-nama').innerText = nama;
         document.getElementById('media-info').innerText = info;
-
         if(type === 'video') {
-            // Video autoplay, muted agar diizinkan browser, loop terus
             wrap.innerHTML = `<video src="${url}" class="media-content" autoplay muted loop playsinline></video>`;
         } else {
             wrap.innerHTML = `<img src="${url}" class="media-content">`;
         }
-        
         document.getElementById('media-player').style.display = 'flex';
     }
 
     function tutupMediaPlayer() {
-        document.getElementById('media-wrap').innerHTML = ''; // Stop video
+        document.getElementById('media-wrap').innerHTML = '';
         document.getElementById('media-player').style.display = 'none';
     }
 
@@ -168,7 +172,7 @@
         const token = localStorage.getItem('gh_token');
         const content = document.getElementById('json-editor').value;
         if(!token) return alert("Token tidak ada!");
-        const btn = event.target; btn.disabled = true;
+        const btn = event.target; btn.disabled = true; btn.innerText = "PROSES...";
 
         try {
             const get = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/data.json`);
@@ -176,10 +180,10 @@
             const res = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/data.json`, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: "update", content: btoa(content), sha: file.sha })
+                body: JSON.stringify({ message: "update stok", content: btoa(content), sha: file.sha })
             });
-            if(res.ok) { alert("Berhasil!"); location.reload(); }
-            else { alert("Gagal!"); btn.disabled = false; }
+            if(res.ok) { alert("Data Berhasil Disimpan!"); location.reload(); }
+            else { alert("Gagal Simpan!"); btn.disabled = false; btn.innerText = "Update Data"; }
         } catch (e) { alert("Error Server!"); btn.disabled = false; }
     }
 
