@@ -1,21 +1,23 @@
 {
   "kategori": [
-    { "id": "pejantan", "nama": "PEJANTAN", "nilai": "5" }
+    { "id": "kartu", "nama": "STOK KARTU", "nilai": "200.000" },
+    { "id": "hp", "nama": "STOK HANDPHONE", "nilai": "500.000" },
+    { "id": "barang", "nama": "STOK BARANG", "nilai": "300.000" }
   ],
   "barang": [
     {
-      "kategoriId": "pejantan",
-      "nama": "JAROT",
-      "info": "85 KG",
-      "type": "video",
-      "foto": "LINK_VIDIO_MP4_KAKAK"
+      "kategoriId": "kartu",
+      "nama": "SIMPATI 10GB",
+      "info": "READY",
+      "type": "image",
+      "foto": "https://via.placeholder.com/400x300?text=Contoh+Gambar"
     },
     {
-      "kategoriId": "pejantan",
-      "nama": "BEJO",
-      "info": "70 KG",
-      "type": "image",
-      "foto": "LINK_FOTO_KAKAK"
+      "kategoriId": "hp",
+      "nama": "VIDIO HP",
+      "info": "PROMO",
+      "type": "video",
+      "foto": "https://www.w3schools.com/html/mov_bbb.mp4"
     }
   ]
 }
