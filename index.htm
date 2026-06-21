@@ -187,28 +187,3 @@
 </script>
 </body>
 </html>
-2. Format data.json (Harus Update)
-Kakak perlu menambahkan kolom "type" di daftar barang agar sistem tahu mana yang video dan mana yang foto.
-code
-JSON
-{
-  "kategori": [
-    { "id": "pejantan", "nama": "PEJANTAN", "nilai": "5" }
-  ],
-  "barang": [
-    {
-      "kategoriId": "pejantan",
-      "nama": "JAROT",
-      "info": "85 KG",
-      "type": "video",
-      "foto": "LINK_VIDIO_MP4_KAKAK"
-    },
-    {
-      "kategoriId": "pejantan",
-      "nama": "BEJO",
-      "info": "70 KG",
-      "type": "image",
-      "foto": "LINK_FOTO_KAKAK"
-    }
-  ]
-}
