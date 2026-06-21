@@ -3,92 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Fase Selular Pakam</title>
+    <title>Dashboard Fase Selular Pakam - Media</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Kanit:ital,wght@1,700&display=swap" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1542332213-9b5a5a3fab35?fit=crop&w=1200&q=80');
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1542332213-9b5a5a3fab35?fit=crop&w=1200&q=80');
             background-size: cover; background-position: center; background-attachment: fixed;
-            font-family: 'Orbitron', sans-serif; color: white; min-height: 100vh; margin: 0; padding: 15px;
+            font-family: 'Orbitron', sans-serif; color: white; min-height: 100vh; margin: 0; padding: 20px;
         }
         .judul-emas { color: #facc15; font-family: 'Kanit', sans-serif; font-style: italic; font-weight: 800; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); }
-        .kartu-utama { background: rgba(13, 18, 1, 0.9); border-radius: 12px; padding: 25px; display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: 12px auto; cursor: pointer; border-bottom: 4px solid #111; }
-        .kotak-item { background: rgba(13, 18, 1, 0.95); border-radius: 10px; overflow: hidden; border: 1px solid #4a5d23; }
-        #media-player { position: fixed; inset: 0; background: #000; display: none; flex-direction: column; z-index: 2000; }
+        .kartu-utama { background: rgba(13, 18, 1, 0.9); border-radius: 15px; padding: 25px; display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: 12px auto; cursor: pointer; transition: 0.3s; border-bottom: 4px solid #111; }
+        .kotak-item { background: rgba(13, 18, 1, 0.95); border-radius: 12px; overflow: hidden; border: 1px solid #4a5d23; cursor: pointer; }
+        
+        /* TAMPILAN DETAIL MEDIA (SESUAI GAMBAR KAKAK) */
+        #media-player {
+            position: fixed; inset: 0; background: #0d0e05; display: none; 
+            flex-direction: column; z-index: 2000;
+        }
+        .media-content { width: 100%; height: 75vh; object-fit: contain; background: black; }
+        .media-footer { background: #0d1201; flex-grow: 1; padding: 30px; border-top: 2px solid #facc15; }
+
         #admin-panel { position: fixed; inset: 0; background: rgba(0,0,0,0.98); display: none; z-index: 3000; padding: 20px; overflow-y: auto; }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <div class="flex justify-between items-center mb-10 bg-black/30 p-3 rounded-lg backdrop-blur-sm border border-white/10">
-        <div class="flex-1">
-            <img src="logo.png" alt="Logo" class="h-12 w-auto object-contain" onerror="this.src='https://via.placeholder.com/100x50?text=LOGO+FS';">
+    <!-- Navigasi -->
+    <div class="flex justify-between items-center mb-8">
+        <div class="text-[8px] border border-white/20 p-1 rounded uppercase">V.11.0</div>
+        <div class="text-center">
+            <h2 id="jam" class="text-2xl font-bold tracking-widest text-blue-100">00.00.00</h2>
+            <p id="tgl" class="text-[9px] opacity-60">MINGGU, 21 JUN 2026</p>
         </div>
-        <div class="text-center flex-1">
-            <h2 id="jam" class="text-2xl font-bold tracking-tighter text-white">00.00.00</h2>
-            <p id="tgl" class="text-[8px] opacity-60 uppercase tracking-widest">MINGGU, 21 JUN 2026</p>
-        </div>
-        <div class="flex-1 text-right">
-            <button onclick="bukaAdminPrompt()" class="bg-gray-800 border border-white/20 px-3 py-1 text-[9px] rounded font-bold uppercase tracking-widest">ADMIN</button>
-        </div>
+        <button onclick="bukaLoginAdmin()" class="border border-white/40 px-3 py-1 text-[9px] rounded uppercase bg-black/40">ADMIN</button>
     </div>
 
-    <!-- Title -->
+    <!-- Judul -->
     <div class="text-center mb-12">
-        <h1 class="text-5xl judul-emas uppercase italic">FASE SELULAR</h1>
-        <h1 class="text-5xl judul-emas mb-2 uppercase italic">PAKAM</h1>
-        <p class="text-[9px] tracking-[0.4em] text-white/50 uppercase">Pencatatan Stok Modern</p>
+        <h1 class="text-6xl judul-emas uppercase italic">FASE SELULAR</h1>
+        <h1 class="text-6xl judul-emas mb-4 uppercase italic">PAKAM</h1>
     </div>
 
-    <!-- List Stok -->
-    <div id="container-stok" class="mb-10">
-        <p class="text-center italic opacity-30">Mengambil data...</p>
-    </div>
+    <!-- Area Kategori -->
+    <div id="container-stok"></div>
 
-    <!-- Galeri -->
-    <div id="area-galeri" class="max-w-5xl mx-auto mt-10 hidden border-t border-white/10 pt-6">
-        <div class="flex justify-between items-center mb-4 uppercase text-xs">
+    <!-- Area Galeri -->
+    <div id="area-galeri" class="max-w-5xl mx-auto mt-10 hidden">
+        <div class="flex justify-between items-center mb-4 border-b border-yellow-600/30 pb-2 uppercase text-xs">
             <h3 id="label-kategori" class="text-yellow-500 font-bold italic">KATEGORI</h3>
-            <button onclick="document.getElementById('area-galeri').style.display='none'" class="text-red-400 font-bold uppercase">Tutup X</button>
+            <button onclick="document.getElementById('area-galeri').style.display='none'" class="opacity-50">TUTUP X</button>
         </div>
-        <div id="grid-item" class="grid grid-cols-2 md:grid-cols-4 gap-3"></div>
+        <div id="grid-item" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
     </div>
 
-    <!-- Player -->
+    <!-- ================= HALAMAN MEDIA PLAYER (GAMBAR KAKAK) ================= -->
     <div id="media-player">
-        <div id="media-wrap" class="w-full h-[70vh]"></div>
-        <div class="bg-[#0d1201] flex-grow p-6 flex flex-col justify-between border-t-2 border-[#facc15]">
-            <div class="flex justify-between items-center">
-                <h2 id="media-nama" class="text-3xl font-bold italic uppercase">NAMA</h2>
-                <span id="media-info" class="text-xl font-bold text-yellow-500">INFO</span>
+        <div id="media-wrap" class="w-full h-[75vh]">
+            <!-- Foto atau Video masuk sini -->
+        </div>
+        <div class="media-footer">
+            <div class="flex justify-between items-center mb-10">
+                <h2 id="media-nama" class="text-4xl font-bold italic uppercase tracking-wider">NAMA</h2>
+                <span id="media-info" class="text-2xl font-bold">INFO</span>
             </div>
-            <button onclick="tutupMediaPlayer()" class="w-full py-4 text-xs tracking-[8px] uppercase opacity-60 font-bold">K E M B A L I</button>
+            <button onclick="tutupMediaPlayer()" class="w-full text-center text-xs tracking-[5px] uppercase opacity-60 font-bold">K E M B A L I</button>
         </div>
     </div>
 
     <!-- Admin Panel -->
     <div id="admin-panel">
         <div class="max-w-md mx-auto">
-            <h2 class="text-yellow-500 font-bold text-center mb-4 uppercase">ADMIN DATABASE</h2>
-            <div class="bg-red-900/20 p-3 rounded mb-4 text-[10px] text-red-300 border border-red-900/50">
-                ⚠️ Hati-hati saat mengedit teks di bawah. Pastikan tanda kutip dan koma tidak hilang.
-            </div>
-            <textarea id="json-editor" class="w-full h-80 p-3 bg-black border border-gray-700 rounded text-[10px] font-mono text-green-400 outline-none mb-4"></textarea>
-            <button onclick="simpanKeGitHub()" id="btn-save" class="w-full bg-yellow-600 p-4 rounded font-bold uppercase shadow-lg">SIMPAN DATA KE GITHUB</button>
-            <button onclick="tutupAdmin()" class="w-full mt-4 text-[10px] opacity-40 text-center block">BATAL</button>
-            <p id="notif-admin" class="text-center text-[10px] mt-4"></p>
+            <h2 class="text-yellow-500 font-bold text-center mb-6 uppercase">Database Editor</h2>
+            <textarea id="json-editor" class="w-full h-96 p-3 bg-black border border-gray-700 rounded text-[10px] font-mono text-green-400 outline-none"></textarea>
+            <button onclick="simpanKeGitHub()" class="w-full bg-yellow-600 p-4 rounded font-bold uppercase mt-6">Update Data</button>
+            <button onclick="tutupAdmin()" class="w-full mt-4 text-xs opacity-50">Batal</button>
         </div>
     </div>
 
 <script>
-    // === MASUKKAN DATA GITHUB BOSKU DI SINI AGAR TIDAK ERROR ===
-    const GH_USER = "anggadapu276-hub"; // Ganti jika salah
-    const GH_REPO = "GANTI_DENGAN_NAMA_REPO_BOSKU"; // Contoh: toko-pakam
-    const ID_AKSES = "admin123"; 
+    const ID_AKSES = "admin123";
+    let database = {};
 
-    let db = {};
+    const GH_USER = window.location.hostname.split('.')[0];
+    const GH_REPO = window.location.pathname.replace(/\//g, '');
 
     setInterval(() => {
         const d = new Date();
@@ -96,99 +94,121 @@
         document.getElementById('tgl').innerText = d.toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'short', year:'numeric'}).toUpperCase();
     }, 1000);
 
-    async function init() {
+    async function muatData() {
         try {
             const res = await fetch('data.json?v=' + Date.now());
-            if(!res.ok) throw new Error("File data.json tidak ditemukan");
-            db = await res.json();
-            renderUI();
-        } catch (e) { 
-            document.getElementById('container-stok').innerHTML = `<p class="text-center text-red-400 text-xs">${e.message}</p>`;
-        }
+            database = await res.json();
+            renderKartu();
+            document.getElementById('json-editor').value = JSON.stringify(database, null, 2);
+        } catch (e) { console.log("Error muat data.json"); }
     }
 
-    function renderUI() {
-        document.getElementById('container-stok').innerHTML = db.kategori.map(cat => `
-            <div class="kartu-utama shadow-xl" onclick="bukaGaleri('${cat.id}', '${cat.nama}')">
-                <span class="text-xs font-bold tracking-widest uppercase text-white/80">${cat.nama}</span>
-                <span class="text-3xl font-bold text-white">${cat.nilai}</span>
+    function renderKartu() {
+        document.getElementById('container-stok').innerHTML = database.kategori.map(cat => `
+            <div class="kartu-utama" onclick="tampilkanGaleri('${cat.id}', '${cat.nama}')">
+                <span class="text-sm font-bold tracking-widest uppercase">${cat.nama}</span>
+                <span class="text-4xl font-bold">${cat.nilai}</span>
             </div>
         `).join('');
-        document.getElementById('json-editor').value = JSON.stringify(db, null, 2);
     }
 
-    function bukaGaleri(idCat, namaCat) {
+    function tampilkanGaleri(idCat, namaCat) {
         document.getElementById('label-kategori').innerText = namaCat;
         const grid = document.getElementById('grid-item');
-        const items = db.barang.filter(b => b.kategoriId === idCat);
-        grid.innerHTML = items.length > 0 ? items.map(b => `
-            <div class="kotak-item shadow-lg" onclick="bukaMedia('${b.foto}', '${b.nama}', '${b.info}', '${b.type}')">
-                <img src="${b.foto}" class="w-full h-32 object-cover bg-gray-900" onerror="this.src='https://via.placeholder.com/200?text=Error+Img'">
-                <div class="p-2 bg-[#0d1201] text-[9px] flex justify-between uppercase">
-                    <span class="font-bold">${b.nama}</span>
-                    <span class="text-yellow-500 font-bold">${b.info}</span>
+        const items = database.barang.filter(b => b.kategoriId === idCat);
+        
+        grid.innerHTML = items.map(b => `
+            <div class="kotak-item" onclick="bukaMediaPlayer('${b.foto}', '${b.nama}', '${b.info}', '${b.type}')">
+                <img src="${b.foto}" class="w-full h-32 object-cover bg-gray-800" onerror="this.src='https://via.placeholder.com/300?text=Media'">
+                <div class="p-2 bg-[#0d1201] text-[10px] flex justify-between">
+                    <span class="font-bold uppercase">${b.nama}</span>
+                    <span class="text-yellow-500">${b.info}</span>
                 </div>
             </div>
-        `).join('') : "<p class='col-span-2 text-center py-10 opacity-30 italic text-xs'>Kosong bosku...</p>";
+        `).join('');
         document.getElementById('area-galeri').style.display = 'block';
-        document.getElementById('area-galeri').scrollIntoView({ behavior: 'smooth' });
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
 
-    function bukaMedia(url, nama, info, type) {
+    // FUNGSI UTAMA: BUKA FOTO ATAU VIDEO (AUTOPLAY)
+    function bukaMediaPlayer(url, nama, info, type) {
         const wrap = document.getElementById('media-wrap');
         document.getElementById('media-nama').innerText = nama;
         document.getElementById('media-info').innerText = info;
-        wrap.innerHTML = type === 'video' ? `<video src="${url}" class="media-content" autoplay muted loop playsinline></video>` : `<img src="${url}" class="media-content">`;
+
+        if(type === 'video') {
+            // Video autoplay, muted agar diizinkan browser, loop terus
+            wrap.innerHTML = `<video src="${url}" class="media-content" autoplay muted loop playsinline></video>`;
+        } else {
+            wrap.innerHTML = `<img src="${url}" class="media-content">`;
+        }
+        
         document.getElementById('media-player').style.display = 'flex';
     }
 
-    function tutupMediaPlayer() { document.getElementById('media-wrap').innerHTML = ''; document.getElementById('media-player').style.display = 'none'; }
-    function tutupAdmin() { document.getElementById('admin-panel').style.display = 'none'; }
+    function tutupMediaPlayer() {
+        document.getElementById('media-wrap').innerHTML = ''; // Stop video
+        document.getElementById('media-player').style.display = 'none';
+    }
 
-    function bukaAdminPrompt() {
-        let ask = prompt("MASUKKAN ID ADMIN:");
+    function bukaLoginAdmin() {
+        let ask = prompt("ID:");
         if(ask === ID_AKSES) {
             if(!localStorage.getItem('gh_token')) {
-                let t = prompt("PERTAMA KALI LOGIN: Masukkan Token GitHub Bosku:");
+                let t = prompt("Masukkan Token GitHub:");
                 if(t) localStorage.setItem('gh_token', t);
             }
             document.getElementById('admin-panel').style.display = 'block';
         }
     }
 
+    function tutupAdmin() { document.getElementById('admin-panel').style.display = 'none'; }
+
     async function simpanKeGitHub() {
         const token = localStorage.getItem('gh_token');
         const content = document.getElementById('json-editor').value;
-        const notif = document.getElementById('notif-admin');
         if(!token) return alert("Token tidak ada!");
-        
-        const btn = document.getElementById('btn-save');
-        btn.disabled = true; btn.innerText = "SEDANG MENGUPLOAD...";
-        notif.innerText = "Menghubungkan ke server GitHub...";
+        const btn = event.target; btn.disabled = true;
 
         try {
             const get = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/data.json`);
-            if(!get.ok) throw new Error("Gagal akses API. Cek nama User & Repo di kode!");
             const file = await get.json();
-            
             const res = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/data.json`, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: "Update via Web", content: btoa(content), sha: file.sha })
+                body: JSON.stringify({ message: "update", content: btoa(content), sha: file.sha })
             });
-
-            if(res.ok) { 
-                notif.innerHTML = "<span class='text-green-500'>BERHASIL! Tunggu 1 menit lalu refresh.</span>";
-                setTimeout(() => location.reload(), 2000);
-            } else { 
-                throw new Error("Gagal simpan! Token mungkin salah atau tidak punya akses 'repo'.");
-            }
-        } catch (e) { 
-            notif.innerHTML = `<span class='text-red-500'>ERROR: ${e.message}</span>`;
-            btn.disabled = false; btn.innerText = "SIMPAN ULANG";
-        }
+            if(res.ok) { alert("Berhasil!"); location.reload(); }
+            else { alert("Gagal!"); btn.disabled = false; }
+        } catch (e) { alert("Error Server!"); btn.disabled = false; }
     }
-    init();
+
+    muatData();
 </script>
 </body>
 </html>
+2. Format data.json (Harus Update)
+Kakak perlu menambahkan kolom "type" di daftar barang agar sistem tahu mana yang video dan mana yang foto.
+code
+JSON
+{
+  "kategori": [
+    { "id": "pejantan", "nama": "PEJANTAN", "nilai": "5" }
+  ],
+  "barang": [
+    {
+      "kategoriId": "pejantan",
+      "nama": "JAROT",
+      "info": "85 KG",
+      "type": "video",
+      "foto": "LINK_VIDIO_MP4_KAKAK"
+    },
+    {
+      "kategoriId": "pejantan",
+      "nama": "BEJO",
+      "info": "70 KG",
+      "type": "image",
+      "foto": "LINK_FOTO_KAKAK"
+    }
+  ]
+}
