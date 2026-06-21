@@ -14,63 +14,52 @@
         }
         .judul-emas { color: #facc15; font-family: 'Kanit', sans-serif; font-style: italic; font-weight: 800; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); }
         .kartu-utama { background: rgba(13, 18, 1, 0.9); border-radius: 15px; padding: 25px; display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: 12px auto; cursor: pointer; transition: 0.3s; border-bottom: 4px solid #111; }
+        .kartu-utama:hover { border-color: #facc15; background: rgba(30, 40, 10, 0.9); transform: scale(1.02); }
         .kotak-item { background: rgba(13, 18, 1, 0.95); border-radius: 12px; overflow: hidden; border: 1px solid #4a5d23; cursor: pointer; }
-        
-        /* Layout Media Player */
         #media-player { position: fixed; inset: 0; background: #000; display: none; flex-direction: column; z-index: 2000; }
-        .media-content { width: 100%; height: 70vh; object-fit: contain; background: black; }
-        .media-footer { background: #0d1201; flex-grow: 1; padding: 30px; border-top: 2px solid #facc15; }
-
+        .media-content { width: 100%; height: 70vh; object-fit: contain; }
         #admin-panel { position: fixed; inset: 0; background: rgba(0,0,0,0.98); display: none; z-index: 3000; padding: 20px; overflow-y: auto; }
-        
-        /* Logo Pojok Kiri Atas */
-        .logo-header { height: 60px; width: auto; object-fit: contain; filter: drop-shadow(0 0 5px rgba(0,0,0,0.5)); }
     </style>
 </head>
 <body>
 
-    <!-- Navigasi Header -->
-    <div class="flex justify-between items-center mb-12">
-        <!-- LOGO POJOK KIRI ATAS -->
+    <!-- Navigasi Header (Logo | Jam | Login) -->
+    <div class="flex justify-between items-center mb-12 bg-black/20 p-4 rounded-xl backdrop-blur-sm">
         <div class="flex-1">
-            <img src="logo.png" alt="FS Logo" class="logo-header" onerror="this.style.display='none'">
+            <img src="logo.png" alt="Logo" class="h-16 w-auto object-contain" onerror="this.src='https://via.placeholder.com/60?text=FS';">
         </div>
-        
-        <!-- JAM DI TENGAH -->
         <div class="text-center flex-1">
-            <h2 id="jam" class="text-2xl font-bold tracking-widest text-blue-100">00.00.00</h2>
-            <p id="tgl" class="text-[9px] opacity-60 uppercase tracking-widest">MINGGU, 21 JUN 2026</p>
+            <h2 id="jam" class="text-3xl font-bold tracking-widest text-white shadow-lg">00.00.00</h2>
+            <p id="tgl" class="text-[10px] opacity-80 uppercase tracking-widest">MINGGU, 21 JUN 2026</p>
         </div>
-
-        <!-- TOMBOL LOGIN DI KANAN -->
         <div class="flex-1 text-right">
-            <button onclick="bukaLoginAdmin()" class="border border-white/40 px-3 py-1 text-[9px] rounded uppercase bg-black/40 hover:bg-white/10 transition">LOGIN</button>
+            <button onclick="bukaAdminPrompt()" class="bg-gray-800/80 border border-white/20 px-4 py-2 text-[10px] rounded font-bold uppercase tracking-widest hover:bg-white/10 transition">ADMIN</button>
         </div>
     </div>
 
-    <!-- Judul Tengah -->
+    <!-- Judul -->
     <div class="text-center mb-16">
         <h1 class="text-6xl judul-emas uppercase italic">FASE SELULAR</h1>
         <h1 class="text-6xl judul-emas mb-4 uppercase italic">PAKAM</h1>
         <p class="text-[10px] tracking-[0.4em] text-white/70 uppercase">Pencatatan Stok Modern</p>
     </div>
 
-    <!-- Area Kategori -->
+    <!-- Container Stok -->
     <div id="container-stok" class="mb-20"></div>
 
     <!-- Area Galeri -->
     <div id="area-galeri" class="max-w-5xl mx-auto mt-10 hidden">
-        <div class="flex justify-between items-center mb-4 border-b border-yellow-600/30 pb-2 uppercase text-xs">
-            <h3 id="label-kategori" class="text-yellow-500 font-bold italic">KATEGORI</h3>
-            <button onclick="document.getElementById('area-galeri').style.display='none'" class="opacity-50">TUTUP X</button>
+        <div class="flex justify-between items-center mb-4 border-b border-yellow-600/30 pb-2">
+            <h3 id="label-kategori" class="text-yellow-500 font-bold italic text-sm uppercase">KATEGORI</h3>
+            <button onclick="document.getElementById('area-galeri').style.display='none'" class="opacity-50 text-xs">TUTUP X</button>
         </div>
         <div id="grid-item" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
     </div>
 
-    <!-- Media Player View -->
+    <!-- Full Player View -->
     <div id="media-player">
         <div id="media-wrap" class="w-full h-[70vh]"></div>
-        <div class="media-footer">
+        <div class="bg-[#0d1201] flex-grow p-8 border-top-2 border-[#facc15]">
             <div class="flex justify-between items-center mb-10">
                 <h2 id="media-nama" class="text-4xl font-bold italic uppercase tracking-wider">NAMA</h2>
                 <span id="media-info" class="text-2xl font-bold">INFO</span>
@@ -79,54 +68,55 @@
         </div>
     </div>
 
-    <!-- Panel Admin -->
+    <!-- Admin Editor -->
     <div id="admin-panel">
-        <div class="max-w-md mx-auto">
-            <h2 class="text-yellow-500 font-bold text-center mb-6 uppercase">Database Editor</h2>
+        <div class="max-w-md mx-auto pt-10">
+            <h2 class="text-yellow-500 font-bold text-center mb-6 uppercase tracking-widest">Update Database</h2>
             <textarea id="json-editor" class="w-full h-96 p-3 bg-black border border-gray-700 rounded text-[10px] font-mono text-green-400 outline-none"></textarea>
-            <button onclick="simpanKeGitHub()" class="w-full bg-yellow-600 p-4 rounded font-bold uppercase mt-6">Update Data</button>
+            <button onclick="simpanKeGitHub()" class="w-full bg-yellow-600 p-4 rounded font-bold uppercase mt-6 shadow-lg">Upload Data Baru</button>
             <button onclick="tutupAdmin()" class="w-full mt-4 text-xs opacity-50 text-center block">Batal</button>
         </div>
     </div>
 
 <script>
-    const ID_AKSES = "admin123";
-    let database = {};
+    const ID_AKSES = "admin123"; // ID untuk masuk admin
+    let db = {};
 
-    const GH_USER = window.location.hostname.split('.')[0];
-    const GH_REPO = window.location.pathname.replace(/\//g, '');
+    // Deteksi Otomatis Repo
+    const USER = window.location.hostname.split('.')[0];
+    const REPO = window.location.pathname.replace(/\//g, '');
 
+    // Jam Realtime
     setInterval(() => {
         const d = new Date();
         document.getElementById('jam').innerText = d.toLocaleTimeString('en-GB').replace(/:/g, '.');
         document.getElementById('tgl').innerText = d.toLocaleDateString('id-ID', {weekday:'long', day:'numeric', month:'short', year:'numeric'}).toUpperCase();
     }, 1000);
 
-    async function muatData() {
+    async function init() {
         try {
             const res = await fetch('data.json?v=' + Date.now());
-            database = await res.json();
-            renderKartu();
-            document.getElementById('json-editor').value = JSON.stringify(database, null, 2);
-        } catch (e) { console.log("Error muat data.json"); }
+            db = await res.json();
+            renderUI();
+        } catch (e) { alert("data.json gagal dimuat!"); }
     }
 
-    function renderKartu() {
-        document.getElementById('container-stok').innerHTML = database.kategori.map(cat => `
-            <div class="kartu-utama shadow-2xl" onclick="tampilkanGaleri('${cat.id}', '${cat.nama}')">
+    function renderUI() {
+        document.getElementById('container-stok').innerHTML = db.kategori.map(cat => `
+            <div class="kartu-utama shadow-2xl" onclick="bukaGaleri('${cat.id}', '${cat.nama}')">
                 <span class="text-sm font-bold tracking-widest uppercase text-white/90">${cat.nama}</span>
                 <span class="text-4xl font-bold text-white">${cat.nilai}</span>
             </div>
         `).join('');
+        document.getElementById('json-editor').value = JSON.stringify(db, null, 2);
     }
 
-    function tampilkanGaleri(idCat, namaCat) {
+    function bukaGaleri(idCat, namaCat) {
         document.getElementById('label-kategori').innerText = namaCat;
         const grid = document.getElementById('grid-item');
-        const items = database.barang.filter(b => b.kategoriId === idCat);
-        
+        const items = db.barang.filter(b => b.kategoriId === idCat);
         grid.innerHTML = items.map(b => `
-            <div class="kotak-item shadow-lg" onclick="bukaMediaPlayer('${b.foto}', '${b.nama}', '${b.info}', '${b.type}')">
+            <div class="kotak-item shadow-lg" onclick="bukaMedia('${b.foto}', '${b.nama}', '${b.info}', '${b.type}')">
                 <img src="${b.foto}" class="w-full h-32 object-cover bg-gray-800" onerror="this.src='https://via.placeholder.com/300?text=Media'">
                 <div class="p-2 bg-[#0d1201] text-[10px] flex justify-between">
                     <span class="font-bold uppercase">${b.nama}</span>
@@ -138,7 +128,7 @@
         document.getElementById('area-galeri').scrollIntoView({ behavior: 'smooth' });
     }
 
-    function bukaMediaPlayer(url, nama, info, type) {
+    function bukaMedia(url, nama, info, type) {
         const wrap = document.getElementById('media-wrap');
         document.getElementById('media-nama').innerText = nama;
         document.getElementById('media-info').innerText = info;
@@ -155,7 +145,7 @@
         document.getElementById('media-player').style.display = 'none';
     }
 
-    function bukaLoginAdmin() {
+    function bukaAdminPrompt() {
         let ask = prompt("ID:");
         if(ask === ID_AKSES) {
             if(!localStorage.getItem('gh_token')) {
@@ -172,22 +162,22 @@
         const token = localStorage.getItem('gh_token');
         const content = document.getElementById('json-editor').value;
         if(!token) return alert("Token tidak ada!");
-        const btn = event.target; btn.disabled = true; btn.innerText = "PROSES...";
+        const btn = event.target; btn.disabled = true; btn.innerText = "UPDATING...";
 
         try {
-            const get = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/data.json`);
+            const get = await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/data.json`);
             const file = await get.json();
-            const res = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/data.json`, {
+            const res = await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/data.json`, {
                 method: 'PUT',
                 headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: "update stok", content: btoa(content), sha: file.sha })
+                body: JSON.stringify({ message: "update", content: btoa(content), sha: file.sha })
             });
-            if(res.ok) { alert("Data Berhasil Disimpan!"); location.reload(); }
+            if(res.ok) { alert("Berhasil!"); location.reload(); }
             else { alert("Gagal Simpan!"); btn.disabled = false; btn.innerText = "Update Data"; }
-        } catch (e) { alert("Error Server!"); btn.disabled = false; }
+        } catch (e) { alert("Error!"); btn.disabled = false; }
     }
 
-    muatData();
+    init();
 </script>
 </body>
 </html>
