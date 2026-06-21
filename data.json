@@ -1,33 +1,24 @@
 {
   "kategori": [
-    {
-      "id": "kartu",
-      "nama": "STOK KARTU",
-      "nilai": "200.000"
-    },
-    {
-      "id": "hp",
-      "nama": "STOK HANDPHONE",
-      "nilai": "50"
-    },
-    {
-      "id": "barang",
-      "nama": "STOK BARANG",
-      "nilai": "50"
-    }
+    { "id": "kartu", "nama": "STOK KARTU", "nilai": "200.000" },
+    { "id": "hp", "nama": "STOK HANDPHONE", "nilai": "500.000" },
+    { "id": "barang", "nama": "STOK BARANG", "nilai": "300.000" }
   ],
   "barang": [
     {
       "kategoriId": "kartu",
       "nama": "SIMPATI 10GB",
       "info": "READY",
-      "foto": "https://files.catbox.moe/ddzrwz.jpg"
+      "type": "image",
+      "foto": "https://via.placeholder.com/400x300?text=Contoh+Gambar"
     },
     {
       "kategoriId": "hp",
-      "nama": "IPHONE 13",
-      "info": "NEW",
-      "foto": "https://files.catbox.moe/ddzrwz.jpg"
+      "nama": "VIDIO HP",
+      "info": "PROMO",
+      "type": "video",
+      "foto": "https://www.w3schools.com/html/mov_bbb.mp4"
     }
   ]
 }
+
